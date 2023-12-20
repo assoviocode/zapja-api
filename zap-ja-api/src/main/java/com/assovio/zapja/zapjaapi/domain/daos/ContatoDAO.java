@@ -14,7 +14,7 @@ public interface ContatoDAO extends CrudRepository<Contato, Long> {
 
         @Query(value = "SELECT c FROM Contato c WHERE " +
                         "(:numeroWhats IS NULL OR c.numeroWhats = :numeroWhats) AND " +
-                        "(:nome IS NULL OR c.nome = :nome)")
+                        "(:nome IS NULL OR c.nome like '%'||:nome||'%')")
         Page<Contato> findByFilters(
                         @Param("numeroWhats") String numeroWhats,
                         @Param("nome") String nome,
