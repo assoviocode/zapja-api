@@ -39,6 +39,9 @@ public class TemplateWhats {
     @Column(name = "chave")
     private String chave;
 
+    @Column(name = "ativo", columnDefinition = "TINYINT(1) DEFAULT 1")
+    private Boolean ativo;
+
     @Column(name = "texto")
     private String texto;
 
