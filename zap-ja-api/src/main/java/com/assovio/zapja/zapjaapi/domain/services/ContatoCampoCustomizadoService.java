@@ -1,6 +1,6 @@
 package com.assovio.zapja.zapjaapi.domain.services;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ContatoCampoCustomizadoService {
     }
 
     public void deleteLogical(ContatoCampoCustomizado entity) {
-        entity.setDeletedAt(LocalDateTime.now());
+        entity.setDeletedAt(OffsetDateTime.now());
         this.save(entity);
     }
 

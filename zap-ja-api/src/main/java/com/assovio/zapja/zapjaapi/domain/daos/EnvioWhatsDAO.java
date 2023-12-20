@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 
 @Repository
 public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
@@ -21,5 +22,7 @@ public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
                         @Param("templateWhatsId") Long templateWhatsId,
                         @Param("contatoId") Long contatoId,
                         Pageable pageable);
+
+        EnvioWhats findFirstByStatus(EnumStatusEnvioWhats status);
 
 }

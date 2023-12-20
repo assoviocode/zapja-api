@@ -1,12 +1,17 @@
 package com.assovio.zapja.zapjaapi.domain.models;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,14 +43,21 @@ public class EnvioWhats {
     @Column(name = "celular_origem")
     private String celularOrigem;
 
-    @Column(name = "enviado", columnDefinition = "TINYINT(1) DEFAULT 0")
-    private Boolean enviado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "VARCHAR(50) DEFAULT 'NOVO'")
+    private EnumStatusEnvioWhats status;
 
     @Column(name = "log")
     private String log;
 
     @Column(name = "servidor")
     private String servidor;
+
+    @Column(name = "data_prevista")
+    private Date dataPrevista;
+
+    @Column(name = "data_real")
+    private Date dataReal;
 
     @ManyToOne
     @JoinColumn(name = "template_whats_id")
@@ -58,15 +70,15 @@ public class EnvioWhats {
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    private OffsetDateTime deletedAt;
 
 }

@@ -1,6 +1,6 @@
 package com.assovio.zapja.zapjaapi.domain.models;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,6 +45,6 @@ public class ContatoCampoCustomizado {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    private OffsetDateTime deletedAt;
 
 }

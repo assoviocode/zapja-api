@@ -1,5 +1,8 @@
 package com.assovio.zapja.zapjaapi.api.dtos.request;
 
+import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
@@ -16,14 +19,15 @@ public class EnvioWhatsRequestDTO {
     private String celularOrigem;
 
     @NotNull
+    @JsonProperty("data_prevista")
+    private Date dataPrevista;
+
+    @NotNull
     @JsonProperty("template_whats_id")
     private Long templateWhatsId;
 
-    @JsonProperty("enviado")
-    private Boolean enviado;
-
     @NotNull
-    @JsonProperty("contato_id")
-    private Long contatoId;
+    @JsonProperty("contatos_id")
+    private List<Long> contatosId;
 
 }

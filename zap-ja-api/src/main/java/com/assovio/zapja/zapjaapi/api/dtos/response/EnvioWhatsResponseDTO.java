@@ -1,5 +1,6 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response;
 
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -15,8 +16,8 @@ public class EnvioWhatsResponseDTO {
     @JsonProperty("celular_origem")
     private String celularOrigem;
 
-    @JsonProperty("enviado")
-    private Boolean enviado;
+    @JsonProperty("status")
+    private EnumStatusEnvioWhats status;
 
     @JsonProperty("log")
     private String log;

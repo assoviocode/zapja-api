@@ -84,7 +84,7 @@ public class TemplateWhatsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TemplateWhatsResponseDTO> Update(@PathVariable Long id,
+    public ResponseEntity<TemplateWhatsResponseDTO> update(@PathVariable Long id,
             @Valid @RequestBody TemplateWhatsRequestDTO requestDTO) {
 
         TemplateWhats resultNaoEditado = this.templateWhatsService.getById(id);
@@ -113,7 +113,7 @@ public class TemplateWhatsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Destroy(@PathVariable Long id) {
+    public ResponseEntity<?> destroy(@PathVariable Long id) {
 
         TemplateWhats result = this.templateWhatsService.getById(id);
 

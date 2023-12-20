@@ -1,6 +1,6 @@
 package com.assovio.zapja.zapjaapi.domain.services;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.assovio.zapja.zapjaapi.domain.daos.EnvioWhatsDAO;
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 
 @Service
 public class EnvioWhatsService {
@@ -34,7 +35,7 @@ public class EnvioWhatsService {
     }
 
     public void deleteLogical(EnvioWhats entity) {
-        entity.setDeletedAt(LocalDateTime.now());
+        entity.setDeletedAt(OffsetDateTime.now());
         this.save(entity);
     }
 
@@ -43,4 +44,16 @@ public class EnvioWhatsService {
         return this.dao.findByFilters(celularOrigem, templateWhatsId, contatoId, pageable);
     }
 
+    public EnvioWhats getProximo() {
+        EnvioWhats envioWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NOVO);
+
+        if (envioWhats != null) {
+            envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);
+            this.save(envioWhats);
+
+            return envioWhats;
+        }
+
+        return null;
+    }
 }

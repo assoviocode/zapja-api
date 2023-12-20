@@ -44,7 +44,8 @@ public class ModelMapperConfig {
 		modelMapper.createTypeMap(ContatoCampoCustomizadoRequestDTO.class, ContatoCampoCustomizado.class)
 				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
 		modelMapper.createTypeMap(ContatoRequestDTO.class, Contato.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
+				.<Long>addMapping(src -> null, (des, value) -> des.setId(value))
+				.<Long>addMapping(src -> null, (des, value) -> des.setContatosCamposCustomizados(null));
 		modelMapper.createTypeMap(EnvioWhatsRequestDTO.class, EnvioWhats.class)
 				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
 		modelMapper.createTypeMap(TemplateWhatsRequestDTO.class, TemplateWhats.class)
