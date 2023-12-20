@@ -42,4 +42,8 @@ public class TemplateWhatsService {
         return this.dao.findByFilters(nome, pageable);
     }
 
+    public TemplateWhats getByNome(String nome) {
+        return this.dao.findFirstByNome(nome);
+    }
+
 }

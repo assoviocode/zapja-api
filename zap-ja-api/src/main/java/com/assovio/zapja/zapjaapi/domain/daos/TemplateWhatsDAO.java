@@ -18,4 +18,6 @@ public interface TemplateWhatsDAO extends CrudRepository<TemplateWhats, Long> {
                         @Param("nome") String nome,
                         Pageable pageable);
 
+        TemplateWhats findFirstByNome(String nome);
+
 }

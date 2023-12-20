@@ -62,4 +62,13 @@ public class TemplateWhats {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    public void setNome(String nome) {
+        this.nome = nome;
+        this.setChave(this.nome);
+    }
+
+    public void setChave(String chave) {
+        this.chave = chave.replace(" ", "_").toUpperCase().trim();
+    }
+
 }
