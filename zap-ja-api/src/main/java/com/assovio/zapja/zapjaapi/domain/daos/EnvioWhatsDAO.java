@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 
+@Repository
 public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
 
         @Query(value = "SELECT ew FROM EnvioWhats ew WHERE " +
