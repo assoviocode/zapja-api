@@ -2,6 +2,8 @@ package com.assovio.zapja.zapjaapi.domain.models;
 
 import java.time.OffsetDateTime;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 @Table(name = "contato_campo_customizado")
 public class ContatoCampoCustomizado {
 

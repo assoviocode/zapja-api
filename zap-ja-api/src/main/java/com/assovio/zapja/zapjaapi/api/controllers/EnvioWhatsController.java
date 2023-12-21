@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.assovio.zapja.zapjaapi.api.assemblers.EnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsUpdateRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
@@ -36,6 +38,7 @@ import com.assovio.zapja.zapjaapi.domain.services.TemplateWhatsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("enviosWhats")
@@ -47,19 +50,20 @@ public class EnvioWhatsController {
     private ContatoService contatoService;
 
     @GetMapping
-    public ResponseEntity<Page<EnvioWhatsResponseDTO>> index(
+    public ResponseEntity<Page<EnvioWhatsResponseSimpleDTO>> index(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
+            @RequestParam(name = "status", required = false) EnumStatusEnvioWhats status,
             @RequestParam(name = "celular_origem", required = false) String celularOrigem,
             @RequestParam(name = "template_whats_id", required = false) Long templateWhatsId,
             @RequestParam(name = "contato_id", required = false) Long contatoId) {
 
         Pageable paginacao = PageRequest.of(page, size);
 
-        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(celularOrigem, templateWhatsId, contatoId,
+        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(status, celularOrigem, templateWhatsId, contatoId,
                 paginacao);
 
-        Page<EnvioWhatsResponseDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(result);
+        Page<EnvioWhatsResponseSimpleDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(result);
 
         return ResponseEntity.ok(responseDTOs);
 

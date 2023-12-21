@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("deleted_at IS NULL")
 @Entity
 @Table(name = "contato")
 public class Contato {
@@ -59,6 +61,7 @@ public class Contato {
     private OffsetDateTime deletedAt;
 
     public void setDeletedAt(OffsetDateTime offsetDateTime) {
+
         for (ContatoCampoCustomizado contatoCampoCustomizado : this.contatosCamposCustomizados) {
             contatoCampoCustomizado.setDeletedAt(offsetDateTime);
         }

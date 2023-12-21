@@ -1,5 +1,6 @@
 package com.assovio.zapja.zapjaapi.common;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import org.modelmapper.ModelMapper;
@@ -19,12 +20,14 @@ import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.TemplateWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.TipoCampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
 import com.assovio.zapja.zapjaapi.domain.models.ContatoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
 import com.assovio.zapja.zapjaapi.domain.models.TipoCampoCustomizado;
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 
 @Configuration
 public class ModelMapperConfig {
@@ -57,6 +60,13 @@ public class ModelMapperConfig {
 				.<ContatoResponseDTO>addMapping(src -> src.getContato(),
 						(des, value) -> des.setContatoResponseDTO(value));
 
+		modelMapper.createTypeMap(EnvioWhats.class, EnvioWhatsResponseSimpleDTO.class)
+				.<String>addMapping(src -> src.getContato().getNumeroWhats(), (des, value) -> des.setNumeroWhats(value))
+				.<String>addMapping(src -> src.getContato().getNome(), (des, value) -> des.setNomeContato(value))
+				.<String>addMapping(src -> src.getTemplateWhats().getNome(), (des, value) -> des.setNomeTemplate(value))
+				.<String>addMapping(src -> src.getCelularOrigem(), (des, value) -> des.setNumeroOrigem(value))
+				.<EnumStatusEnvioWhats>addMapping(src -> src.getStatus(), (des, value) -> des.setStatus(value));
+
 		modelMapper.createTypeMap(ContatoCampoCustomizado.class, ContatoCampoCustomizadoResponseSimpleDTO.class)
 				.<Long>addMapping(src -> src.getCampoCustomizado().getId(),
 						(des, value) -> des.setCampoCustomizadoId(value))
@@ -71,6 +81,10 @@ public class ModelMapperConfig {
 		modelMapper.createTypeMap(CampoCustomizado.class, CampoCustomizadoResponseDTO.class)
 				.<TipoCampoCustomizadoResponseDTO>addMapping(src -> src.getTipoCampoCustomizado(),
 						(des, value) -> des.setTipoCampoCustomizadoResponseDTO(value));
+
+		modelMapper.createTypeMap(Contato.class, ContatoResponseDTO.class)
+				.<List<ContatoCampoCustomizadoResponseSimpleDTO>>addMapping(src -> src.getContatosCamposCustomizados(),
+						(des, value) -> des.setContatoCampoCustomizadoResponseSimpleDTOs(value));
 
 		return modelMapper;
 

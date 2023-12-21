@@ -39,9 +39,10 @@ public class EnvioWhatsService {
         this.save(entity);
     }
 
-    public Page<EnvioWhats> getByFilters(String celularOrigem, Long templateWhatsId, Long contatoId,
+    public Page<EnvioWhats> getByFilters(EnumStatusEnvioWhats status, String celularOrigem, Long templateWhatsId,
+            Long contatoId,
             Pageable pageable) {
-        return this.dao.findByFilters(celularOrigem, templateWhatsId, contatoId, pageable);
+        return this.dao.findByFilters(status, celularOrigem, templateWhatsId, contatoId, pageable);
     }
 
     public EnvioWhats getProximo() {

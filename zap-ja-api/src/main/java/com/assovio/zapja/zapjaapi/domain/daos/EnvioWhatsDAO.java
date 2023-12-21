@@ -14,10 +14,12 @@ import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
 
         @Query(value = "SELECT ew FROM EnvioWhats ew WHERE " +
+                        "(:status IS NULL OR ew.status = :status) AND " +
                         "(:celularOrigem IS NULL OR ew.celularOrigem = :celularOrigem) AND " +
                         "(:templateWhatsId IS NULL OR ew.templateWhats.id = :templateWhatsId) AND " +
                         "(:contatoId IS NULL OR ew.contato.id = :contatoId)")
         Page<EnvioWhats> findByFilters(
+                        @Param("status") EnumStatusEnvioWhats status,
                         @Param("celularOrigem") String celularOrigem,
                         @Param("templateWhatsId") Long templateWhatsId,
                         @Param("contatoId") Long contatoId,

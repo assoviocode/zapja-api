@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
@@ -31,6 +32,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLRestriction("deleted_at IS NULL")
 @Entity
 @Table(name = "envio_whats")
 public class EnvioWhats {

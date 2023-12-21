@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 
 import lombok.AllArgsConstructor;
@@ -31,8 +32,16 @@ public class EnvioWhatsAssembler {
         return this.modelMapper.map(requestDTO, EnvioWhats.class);
     }
 
-    public Page<EnvioWhatsResponseDTO> toPageDTO(Page<EnvioWhats> entityPageable) {
-        return entityPageable.map(this::toDTO);
+    public EnvioWhatsResponseSimpleDTO toSimpleDTO(EnvioWhats entity) {
+        return this.modelMapper.map(entity, EnvioWhatsResponseSimpleDTO.class);
+    }
+
+    public List<EnvioWhatsResponseSimpleDTO> toCollectionSimpleDTO(List<EnvioWhats> entitys) {
+        return entitys.stream().map(this::toSimpleDTO).collect(Collectors.toList());
+    }
+
+    public Page<EnvioWhatsResponseSimpleDTO> toPageDTO(Page<EnvioWhats> entityPageable) {
+        return entityPageable.map(this::toSimpleDTO);
     }
 
 }

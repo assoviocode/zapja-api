@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
 
 import lombok.AllArgsConstructor;
@@ -31,8 +32,12 @@ public class ContatoAssembler {
         return this.modelMapper.map(requestDTO, Contato.class);
     }
 
-    public Page<ContatoResponseDTO> toPageDTO(Page<Contato> entityPageable) {
-        return entityPageable.map(this::toDTO);
+    public ContatoResponseSimpleDTO toSimpleDTO(Contato entity) {
+        return this.modelMapper.map(entity, ContatoResponseSimpleDTO.class);
+    }
+
+    public Page<ContatoResponseSimpleDTO> toPageDTO(Page<Contato> entityPageable) {
+        return entityPageable.map(this::toSimpleDTO);
     }
 
 }

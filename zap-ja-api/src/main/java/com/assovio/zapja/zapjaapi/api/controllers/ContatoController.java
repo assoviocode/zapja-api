@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoReques
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
@@ -36,6 +38,7 @@ import com.assovio.zapja.zapjaapi.domain.services.ContatoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("contatos")
@@ -48,7 +51,7 @@ public class ContatoController {
     private ContatoCampoCustomizadoAssembler contatoCampoCustomizadoAssembler;
 
     @GetMapping
-    public ResponseEntity<Page<ContatoResponseDTO>> index(
+    public ResponseEntity<Page<ContatoResponseSimpleDTO>> index(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
             @RequestParam(name = "numero_whats", required = false) String numeroWhats,
@@ -58,7 +61,7 @@ public class ContatoController {
 
         Page<Contato> result = this.contatoService.getByFilters(numeroWhats, nome, paginacao);
 
-        Page<ContatoResponseDTO> responseDTOs = this.contatoAssembler.toPageDTO(result);
+        Page<ContatoResponseSimpleDTO> responseDTOs = this.contatoAssembler.toPageDTO(result);
 
         return ResponseEntity.ok(responseDTOs);
 
