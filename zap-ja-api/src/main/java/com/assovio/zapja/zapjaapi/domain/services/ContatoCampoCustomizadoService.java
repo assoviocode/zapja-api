@@ -43,4 +43,8 @@ public class ContatoCampoCustomizadoService {
         return this.dao.findByFilters(valor, contatoId, campoCustomizadoId, pageable);
     }
 
+    public ContatoCampoCustomizado getByContatoAndCampoCustomizado(Long contatoId, Long campoCustomizadoId) {
+        return this.dao.findFirstByContatoIdAndCampoCustomizadoId(contatoId, campoCustomizadoId);
+    }
+
 }

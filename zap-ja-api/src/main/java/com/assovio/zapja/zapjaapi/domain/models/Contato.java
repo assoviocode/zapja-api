@@ -58,4 +58,12 @@ public class Contato {
     @Column(name = "deleted_at")
     private OffsetDateTime deletedAt;
 
+    public void setDeletedAt(OffsetDateTime offsetDateTime) {
+        for (ContatoCampoCustomizado contatoCampoCustomizado : this.contatosCamposCustomizados) {
+            contatoCampoCustomizado.setDeletedAt(offsetDateTime);
+        }
+
+        this.deletedAt = offsetDateTime;
+    }
+
 }

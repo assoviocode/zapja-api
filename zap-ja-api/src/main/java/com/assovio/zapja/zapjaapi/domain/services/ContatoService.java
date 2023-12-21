@@ -42,4 +42,8 @@ public class ContatoService {
         return this.dao.findByFilters(numeroWhats, nome, pageable);
     }
 
+    public Contato getByNumeroWhats(String numeroWhats) {
+        return this.dao.findFirstByNumeroWhats(numeroWhats);
+    }
+
 }

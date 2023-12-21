@@ -20,4 +20,6 @@ public interface ContatoDAO extends CrudRepository<Contato, Long> {
                         @Param("nome") String nome,
                         Pageable pageable);
 
+        Contato findFirstByNumeroWhats(String numeroWhats);
+
 }

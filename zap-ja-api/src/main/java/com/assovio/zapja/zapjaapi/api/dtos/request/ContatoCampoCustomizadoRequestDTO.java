@@ -16,10 +16,6 @@ public class ContatoCampoCustomizadoRequestDTO {
     private String valor;
 
     @NotNull
-    @JsonProperty("contato_id")
-    private Long contatoId;
-
-    @NotNull
     @JsonProperty("campo_customizado_id")
     private Long campoCustomizadoId;
 

@@ -22,4 +22,6 @@ public interface ContatoCampoCustomizadoDAO extends CrudRepository<ContatoCampoC
                         @Param("campoCustomizadoId") Long campoCustomizadoId,
                         Pageable pageable);
 
+        ContatoCampoCustomizado findFirstByContatoIdAndCampoCustomizadoId(Long contatoId, Long campoCustomizadoId);
+
 }
