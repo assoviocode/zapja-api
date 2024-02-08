@@ -40,11 +40,12 @@ public class TemplateWhatsController {
     public ResponseEntity<Page<TemplateWhatsResponseDTO>> index(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
-            @RequestParam(name = "nome", required = false) String nome) {
+            @RequestParam(name = "nome", required = false) String nome,
+            @RequestParam(name = "ativo", required = false) Boolean ativo) {
 
         Pageable paginacao = PageRequest.of(page, size);
 
-        Page<TemplateWhats> result = this.templateWhatsService.getByFilters(nome, paginacao);
+        Page<TemplateWhats> result = this.templateWhatsService.getByFilters(nome, ativo, paginacao);
 
         Page<TemplateWhatsResponseDTO> responseDTOs = this.templateWhatsAssembler.toPageDTO(result);
 

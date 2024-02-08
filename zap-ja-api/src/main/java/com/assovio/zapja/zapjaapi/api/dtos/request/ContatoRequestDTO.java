@@ -1,10 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.dtos.request;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +17,4 @@ public class ContatoRequestDTO {
     @NotBlank
     @JsonProperty("nome")
     private String nome;
-
-    @Valid
-    @JsonProperty("campos_customizados")
-    private List<ContatoCampoCustomizadoRequestDTO> camposCustomizados;
 }

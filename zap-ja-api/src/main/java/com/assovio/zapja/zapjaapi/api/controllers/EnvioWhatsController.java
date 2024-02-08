@@ -53,6 +53,8 @@ public class EnvioWhatsController {
     public ResponseEntity<Page<EnvioWhatsResponseSimpleDTO>> index(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
+            @RequestParam(name = "nome_contato", required = false) String nomeContato,
+            @RequestParam(name = "numero_whatsapp", required = false) String numeroWhatsapp,
             @RequestParam(name = "status", required = false) EnumStatusEnvioWhats status,
             @RequestParam(name = "celular_origem", required = false) String celularOrigem,
             @RequestParam(name = "template_whats_id", required = false) Long templateWhatsId,
@@ -60,7 +62,8 @@ public class EnvioWhatsController {
 
         Pageable paginacao = PageRequest.of(page, size);
 
-        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(status, celularOrigem, templateWhatsId, contatoId,
+        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(nomeContato, numeroWhatsapp, status, celularOrigem,
+                templateWhatsId, contatoId,
                 paginacao);
 
         Page<EnvioWhatsResponseSimpleDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(result);
@@ -103,7 +106,7 @@ public class EnvioWhatsController {
 
                 result.setTemplateWhats(templateWhats);
                 result.setContato(contato);
-                result.setStatus(EnumStatusEnvioWhats.NOVO);
+                result.setStatus(EnumStatusEnvioWhats.NA_FILA);
 
                 result = this.envioWhatsService.save(result);
 
@@ -150,7 +153,8 @@ public class EnvioWhatsController {
     public ResponseEntity<?> updateCancelarLote(@RequestBody List<Long> enviosWhatsId) {
 
         for (Long id : enviosWhatsId) {
-            EnvioWhats resultNaoEditado = this.envioWhatsService.getById(id);
+
+            EnvioWhats resultNaoEditado = this.envioWhatsService.getById((Long)id);
 
             if (resultNaoEditado != null) {
                 resultNaoEditado.setStatus(EnumStatusEnvioWhats.CANCELADO);

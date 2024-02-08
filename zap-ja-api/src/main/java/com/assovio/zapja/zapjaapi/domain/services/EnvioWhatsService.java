@@ -39,14 +39,14 @@ public class EnvioWhatsService {
         this.save(entity);
     }
 
-    public Page<EnvioWhats> getByFilters(EnumStatusEnvioWhats status, String celularOrigem, Long templateWhatsId,
+    public Page<EnvioWhats> getByFilters(String nomeContato, String numeroWhatsapp, EnumStatusEnvioWhats status, String celularOrigem, Long templateWhatsId,
             Long contatoId,
             Pageable pageable) {
-        return this.dao.findByFilters(status, celularOrigem, templateWhatsId, contatoId, pageable);
+        return this.dao.findByFilters(nomeContato, numeroWhatsapp, status, celularOrigem, templateWhatsId, contatoId, pageable);
     }
 
     public EnvioWhats getProximo() {
-        EnvioWhats envioWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NOVO);
+        EnvioWhats envioWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NA_FILA);
 
         if (envioWhats != null) {
             envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);

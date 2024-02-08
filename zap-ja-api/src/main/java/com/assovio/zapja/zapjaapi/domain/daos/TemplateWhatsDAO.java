@@ -12,10 +12,12 @@ import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
 @Repository
 public interface TemplateWhatsDAO extends CrudRepository<TemplateWhats, Long> {
 
-        @Query(value = "SELECT tw FROM TemplateWhats tw WHERE " +
-                        "(:nome IS NULL OR tw.nome like '%'||:nome||'%')")
+        @Query(value = "SELECT tw FROM TemplateWhats tw WHERE "
+                        + "(:nome IS NULL OR tw.nome like '%'||:nome||'%') AND "
+                        + "(:ativo IS NULL OR tw.ativo = :ativo)")
         Page<TemplateWhats> findByFilters(
                         @Param("nome") String nome,
+                        @Param("ativo") Boolean ativo,
                         Pageable pageable);
 
         TemplateWhats findFirstByNome(String nome);

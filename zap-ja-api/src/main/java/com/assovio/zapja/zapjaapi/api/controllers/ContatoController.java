@@ -1,8 +1,5 @@
 package com.assovio.zapja.zapjaapi.api.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,19 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assemblers.ContatoAssembler;
-import com.assovio.zapja.zapjaapi.api.assemblers.ContatoCampoCustomizadoAssembler;
-import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
-import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
-import com.assovio.zapja.zapjaapi.domain.models.ContatoCampoCustomizado;
-import com.assovio.zapja.zapjaapi.domain.services.CampoCustomizadoService;
-import com.assovio.zapja.zapjaapi.domain.services.ContatoCampoCustomizadoService;
 import com.assovio.zapja.zapjaapi.domain.services.ContatoService;
 
 import jakarta.validation.Valid;
@@ -46,9 +36,6 @@ public class ContatoController {
 
     private ContatoService contatoService;
     private ContatoAssembler contatoAssembler;
-    private CampoCustomizadoService campoCustomizadoService;
-    private ContatoCampoCustomizadoService contatoCampoCustomizadoService;
-    private ContatoCampoCustomizadoAssembler contatoCampoCustomizadoAssembler;
 
     @GetMapping
     public ResponseEntity<Page<ContatoResponseSimpleDTO>> index(
@@ -94,33 +81,7 @@ public class ContatoController {
 
         result = this.contatoService.save(result);
 
-        List<ContatoCampoCustomizadoResponseSimpleDTO> responseSimpleDTOs = new ArrayList<>();
-
-        for (ContatoCampoCustomizadoRequestDTO contatoCampoCustomizadoRequestDTO : requestDTO.getCamposCustomizados()) {
-
-            CampoCustomizado campoCustomizado = this.campoCustomizadoService
-                    .getById(contatoCampoCustomizadoRequestDTO.getCampoCustomizadoId());
-
-            if (campoCustomizado == null) {
-                throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado!");
-            }
-
-            ContatoCampoCustomizado contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler
-                    .toEntity(contatoCampoCustomizadoRequestDTO);
-
-            contatoCampoCustomizado.setCampoCustomizado(campoCustomizado);
-            contatoCampoCustomizado.setContato(result);
-            contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
-
-            ContatoCampoCustomizadoResponseSimpleDTO responseSimpleDTO = this.contatoCampoCustomizadoAssembler
-                    .toSimpleDTO(contatoCampoCustomizado);
-
-            responseSimpleDTOs.add(responseSimpleDTO);
-
-        }
-
         ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(result);
-        responseDTO.setContatoCampoCustomizadoResponseSimpleDTOs(responseSimpleDTOs);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -149,41 +110,7 @@ public class ContatoController {
 
         resultEditado = this.contatoService.save(resultEditado);
 
-        List<ContatoCampoCustomizadoResponseSimpleDTO> responseSimpleDTOs = new ArrayList<>();
-
-        for (ContatoCampoCustomizadoRequestDTO contatoCampoCustomizadoRequestDTO : requestDTO.getCamposCustomizados()) {
-
-            CampoCustomizado campoCustomizado = this.campoCustomizadoService
-                    .getById(contatoCampoCustomizadoRequestDTO.getCampoCustomizadoId());
-
-            if (campoCustomizado == null) {
-                throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado!");
-            }
-
-            ContatoCampoCustomizado contatoCampoCustomizadoNaoEditado = this.contatoCampoCustomizadoService
-                    .getByContatoAndCampoCustomizado(resultEditado.getId(), campoCustomizado.getId());
-
-            if (contatoCampoCustomizadoNaoEditado == null) {
-                throw new EntidadeNaoEncontradaException("ContatoCampo Customizado não encontrado!");
-            }
-
-            ContatoCampoCustomizado contatoCampoCustomizadoEditado = this.contatoCampoCustomizadoAssembler
-                    .toEntity(contatoCampoCustomizadoRequestDTO);
-
-            contatoCampoCustomizadoEditado.setId(contatoCampoCustomizadoNaoEditado.getId());
-            contatoCampoCustomizadoEditado.setCampoCustomizado(campoCustomizado);
-            contatoCampoCustomizadoEditado.setContato(resultEditado);
-            contatoCampoCustomizadoEditado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizadoEditado);
-
-            ContatoCampoCustomizadoResponseSimpleDTO responseSimpleDTO = this.contatoCampoCustomizadoAssembler
-                    .toSimpleDTO(contatoCampoCustomizadoNaoEditado);
-
-            responseSimpleDTOs.add(responseSimpleDTO);
-
-        }
-
         ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(resultEditado);
-        responseDTO.setContatoCampoCustomizadoResponseSimpleDTOs(responseSimpleDTOs);
 
         return ResponseEntity.ok(responseDTO);
 

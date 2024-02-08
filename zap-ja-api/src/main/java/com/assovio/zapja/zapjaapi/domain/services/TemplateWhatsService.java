@@ -38,8 +38,8 @@ public class TemplateWhatsService {
         this.save(entity);
     }
 
-    public Page<TemplateWhats> getByFilters(String nome, Pageable pageable) {
-        return this.dao.findByFilters(nome, pageable);
+    public Page<TemplateWhats> getByFilters(String nome, Boolean ativo, Pageable pageable) {
+        return this.dao.findByFilters(nome, ativo, pageable);
     }
 
     public TemplateWhats getByNome(String nome) {

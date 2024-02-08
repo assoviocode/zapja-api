@@ -83,4 +83,8 @@ public class EnvioWhats {
     @Column(name = "deleted_at")
     private OffsetDateTime deletedAt;
 
+    public Date getDataEnvio() {
+        return this.dataReal == null ? this.dataPrevista : this.dataReal;
+    }
+
 }

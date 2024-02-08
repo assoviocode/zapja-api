@@ -1,5 +1,6 @@
 package com.assovio.zapja.zapjaapi.common;
 
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -65,7 +66,8 @@ public class ModelMapperConfig {
 				.<String>addMapping(src -> src.getContato().getNome(), (des, value) -> des.setNomeContato(value))
 				.<String>addMapping(src -> src.getTemplateWhats().getNome(), (des, value) -> des.setNomeTemplate(value))
 				.<String>addMapping(src -> src.getCelularOrigem(), (des, value) -> des.setNumeroOrigem(value))
-				.<EnumStatusEnvioWhats>addMapping(src -> src.getStatus(), (des, value) -> des.setStatus(value));
+				.<EnumStatusEnvioWhats>addMapping(src -> src.getStatus(), (des, value) -> des.setStatus(value))
+				.<Date>addMapping(src -> src.getDataEnvio(), (des, value) -> des.setDataEnvio(value));
 
 		modelMapper.createTypeMap(ContatoCampoCustomizado.class, ContatoCampoCustomizadoResponseSimpleDTO.class)
 				.<Long>addMapping(src -> src.getCampoCustomizado().getId(),
