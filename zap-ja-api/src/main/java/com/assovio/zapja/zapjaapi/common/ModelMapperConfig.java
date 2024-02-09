@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
@@ -32,6 +33,9 @@ public class ModelMapperConfig {
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
+		modelMapper.createTypeMap(EnvioWhatsRequestDTO.class, EnvioWhats.class)
+				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
 
 		modelMapper.createTypeMap(EnvioWhats.class, EnvioWhatsResponseDTO.class)
 				.<TemplateWhatsResponseDTO>addMapping(src -> src.getTemplateWhats(),
