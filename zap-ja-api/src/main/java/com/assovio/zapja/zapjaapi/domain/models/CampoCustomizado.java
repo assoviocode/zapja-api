@@ -43,6 +43,9 @@ public class CampoCustomizado {
     @Column(name = "ativo", columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean ativo;
 
+    @Column(name = "obrigatorio", columnDefinition = "TINYINT(1) DEFAULT 0")
+    private Boolean obrigatorio;
+
     @ManyToOne
     @JoinColumn(name = "tipo_campo_customizado_id")
     private TipoCampoCustomizado tipoCampoCustomizado;

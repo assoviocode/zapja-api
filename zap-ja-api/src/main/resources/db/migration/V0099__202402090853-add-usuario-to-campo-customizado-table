@@ -1,0 +1,5 @@
+ALTER TABLE campo_customizado 
+ADD COLUMN usuario_id BIGINT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE campo_customizado ADD CONSTRAINT fk_usuario_campo_customizado
+FOREIGN KEY (usuario_id) REFERENCES usuario(id);

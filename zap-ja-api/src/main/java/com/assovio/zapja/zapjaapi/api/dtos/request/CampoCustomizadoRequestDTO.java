@@ -18,6 +18,9 @@ public class CampoCustomizadoRequestDTO {
     @JsonProperty("ativo")
     private Boolean ativo;
 
+    @JsonProperty("obrigatorio")
+    private Boolean obrigatorio;
+
     @NotNull
     @JsonProperty("tipo_campo_customizado_id")
     private Long tipoCampoCustomizadoId;

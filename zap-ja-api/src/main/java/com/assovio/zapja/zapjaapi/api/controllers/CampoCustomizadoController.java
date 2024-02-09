@@ -36,8 +36,6 @@ public class CampoCustomizadoController {
 
     @GetMapping
     public ResponseEntity<List<CampoCustomizadoResponseDTO>> index(
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
             @RequestParam(name = "rotulo", required = false) String rotulo,
             @RequestParam(name = "ativo", required = false) Boolean ativo,
             @RequestParam(name = "tipo_campo_customizado_id", required = false) Long tipoCampoCustomizadoId) {

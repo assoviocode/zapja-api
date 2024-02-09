@@ -18,6 +18,9 @@ public class CampoCustomizadoResponseDTO {
     @JsonProperty("ativo")
     private Boolean ativo;
 
+    @JsonProperty("obrigatorio")
+    private Boolean obrigatorio;
+
     @JsonProperty("tipo_campo_customizado")
     private TipoCampoCustomizadoResponseDTO tipoCampoCustomizadoResponseDTO;
 
