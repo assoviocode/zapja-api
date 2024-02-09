@@ -28,8 +28,10 @@ public class ContatoCampoCustomizadoAssembler {
         return entitys.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public ContatoCampoCustomizado toEntity(ContatoCampoCustomizadoRequestDTO requestDTO) {
-        return this.modelMapper.map(requestDTO, ContatoCampoCustomizado.class);
+    public ContatoCampoCustomizado toEntity(ContatoCampoCustomizadoRequestDTO requestDTO,
+            ContatoCampoCustomizado contatoCampoCustomizado) {
+        this.modelMapper.map(requestDTO, contatoCampoCustomizado);
+        return contatoCampoCustomizado;
     }
 
     public ContatoCampoCustomizadoResponseSimpleDTO toSimpleDTO(ContatoCampoCustomizado entity) {

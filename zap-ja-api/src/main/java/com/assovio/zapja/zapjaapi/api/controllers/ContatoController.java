@@ -17,12 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assemblers.ContatoAssembler;
+import com.assovio.zapja.zapjaapi.api.assemblers.ContatoCampoCustomizadoAssembler;
+import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
+import com.assovio.zapja.zapjaapi.domain.models.ContatoCampoCustomizado;
+import com.assovio.zapja.zapjaapi.domain.services.ContatoCampoCustomizadoService;
 import com.assovio.zapja.zapjaapi.domain.services.ContatoService;
 
 import jakarta.validation.Valid;
@@ -36,6 +41,8 @@ public class ContatoController {
 
     private ContatoService contatoService;
     private ContatoAssembler contatoAssembler;
+    private ContatoCampoCustomizadoService contatoCampoCustomizadoService;
+    private ContatoCampoCustomizadoAssembler contatoCampoCustomizadoAssembler;
 
     @GetMapping
     public ResponseEntity<Page<ContatoResponseSimpleDTO>> index(
@@ -83,6 +90,20 @@ public class ContatoController {
 
         ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(result);
 
+        if (requestDTO.getCampoCustomizadoRequestList() != null
+                && !requestDTO.getCampoCustomizadoRequestList().isEmpty()) {
+            for (ContatoCampoCustomizadoRequestDTO contatoCampoCustomizadoRequestDTO : requestDTO
+                    .getCampoCustomizadoRequestList()) {
+
+                ContatoCampoCustomizado contatoCampoCustomizado = new ContatoCampoCustomizado();
+                contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler
+                        .toEntity(contatoCampoCustomizadoRequestDTO, contatoCampoCustomizado);
+                contatoCampoCustomizado.setContato(result);
+
+                contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
+            }
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
@@ -90,13 +111,13 @@ public class ContatoController {
     public ResponseEntity<ContatoResponseDTO> update(@PathVariable Long id,
             @Valid @RequestBody ContatoRequestDTO requestDTO) {
 
-        Contato resultNaoEditado = this.contatoService.getById(id);
+        Contato contato = this.contatoService.getById(id);
 
-        if (resultNaoEditado == null) {
+        if (contato == null) {
             throw new EntidadeNaoEncontradaException("Contato não encontrado");
         }
 
-        if (!resultNaoEditado.getNumeroWhats().equalsIgnoreCase(requestDTO.getNumeroWhats())) {
+        if (!contato.getNumeroWhats().equalsIgnoreCase(requestDTO.getNumeroWhats())) {
             Contato result = this.contatoService.getByNumeroWhats(requestDTO.getNumeroWhats());
 
             if (result != null) {
@@ -104,13 +125,39 @@ public class ContatoController {
             }
         }
 
-        Contato resultEditado = this.contatoAssembler.toEntity(requestDTO);
-        resultEditado.setId(id);
-        resultEditado.setCreatedAt(resultNaoEditado.getCreatedAt());
+        contato = this.contatoAssembler.toEntity(requestDTO, contato);
 
-        resultEditado = this.contatoService.save(resultEditado);
+        contato = this.contatoService.save(contato);
 
-        ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(resultEditado);
+        ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(contato);
+
+        if (requestDTO.getCampoCustomizadoRequestList() != null && !requestDTO.getCampoCustomizadoRequestList().isEmpty()) {
+
+            for (ContatoCampoCustomizadoRequestDTO contatoCampoCustomizadoRequestDTO : requestDTO.getCampoCustomizadoRequestList()) {
+
+                ContatoCampoCustomizado contatoCampoCustomizado;
+
+                if (contatoCampoCustomizadoRequestDTO.getId() != null) {
+
+                    contatoCampoCustomizado = this.contatoCampoCustomizadoService.getById(contatoCampoCustomizadoRequestDTO.getId());
+
+                }else{
+                    contatoCampoCustomizado = new ContatoCampoCustomizado();
+                }
+
+                if (contatoCampoCustomizado != null) {
+
+                    contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler.toEntity(contatoCampoCustomizadoRequestDTO, contatoCampoCustomizado);
+
+                    contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
+
+                    ContatoCampoCustomizadoResponseDTO contatoCampoCustomizadoResponseDTO = this.contatoCampoCustomizadoAssembler.toDTO(contatoCampoCustomizado);
+                    
+                    responseDTO.getCampoCustomizadoResponseDTOs().add(contatoCampoCustomizadoResponseDTO);
+                }
+
+            }
+        }
 
         return ResponseEntity.ok(responseDTO);
 

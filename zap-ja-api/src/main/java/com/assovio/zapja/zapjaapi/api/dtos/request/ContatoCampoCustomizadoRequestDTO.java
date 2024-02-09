@@ -11,6 +11,9 @@ import lombok.Setter;
 @Setter
 public class ContatoCampoCustomizadoRequestDTO {
 
+    @JsonProperty("id")
+    private Long id;
+
     @NotBlank
     @JsonProperty("valor")
     private String valor;
@@ -18,5 +21,9 @@ public class ContatoCampoCustomizadoRequestDTO {
     @NotNull
     @JsonProperty("campo_customizado_id")
     private Long campoCustomizadoId;
+
+    @NotNull
+    @JsonProperty("contato_id")
+    private Long contatoId;
 
 }

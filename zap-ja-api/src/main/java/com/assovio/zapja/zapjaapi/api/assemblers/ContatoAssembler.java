@@ -32,6 +32,11 @@ public class ContatoAssembler {
         return this.modelMapper.map(requestDTO, Contato.class);
     }
 
+    public Contato toEntity(ContatoRequestDTO requestDTO, Contato contato) {
+        this.modelMapper.map(requestDTO, contato);
+        return contato;
+    }
+
     public ContatoResponseSimpleDTO toSimpleDTO(Contato entity) {
         return this.modelMapper.map(entity, ContatoResponseSimpleDTO.class);
     }

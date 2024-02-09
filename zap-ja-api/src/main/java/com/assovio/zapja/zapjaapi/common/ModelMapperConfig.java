@@ -8,12 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.assovio.zapja.zapjaapi.api.dtos.request.CampoCustomizadoRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.request.TemplateWhatsRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.request.TipoCampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
@@ -26,8 +20,6 @@ import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
 import com.assovio.zapja.zapjaapi.domain.models.ContatoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
-import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
-import com.assovio.zapja.zapjaapi.domain.models.TipoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
 
 @Configuration
@@ -40,20 +32,6 @@ public class ModelMapperConfig {
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
-
-		modelMapper.createTypeMap(TipoCampoCustomizadoRequestDTO.class, TipoCampoCustomizado.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
-		modelMapper.createTypeMap(CampoCustomizadoRequestDTO.class, CampoCustomizado.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
-		modelMapper.createTypeMap(ContatoCampoCustomizadoRequestDTO.class, ContatoCampoCustomizado.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
-		modelMapper.createTypeMap(ContatoRequestDTO.class, Contato.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value))
-				.<Long>addMapping(src -> null, (des, value) -> des.setContatosCamposCustomizados(null));
-		modelMapper.createTypeMap(EnvioWhatsRequestDTO.class, EnvioWhats.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
-		modelMapper.createTypeMap(TemplateWhatsRequestDTO.class, TemplateWhats.class)
-				.<Long>addMapping(src -> null, (des, value) -> des.setId(value));
 
 		modelMapper.createTypeMap(EnvioWhats.class, EnvioWhatsResponseDTO.class)
 				.<TemplateWhatsResponseDTO>addMapping(src -> src.getTemplateWhats(),
@@ -85,8 +63,8 @@ public class ModelMapperConfig {
 						(des, value) -> des.setTipoCampoCustomizadoResponseDTO(value));
 
 		modelMapper.createTypeMap(Contato.class, ContatoResponseDTO.class)
-				.<List<ContatoCampoCustomizadoResponseSimpleDTO>>addMapping(src -> src.getContatosCamposCustomizados(),
-						(des, value) -> des.setContatoCampoCustomizadoResponseSimpleDTOs(value));
+				.<List<ContatoCampoCustomizadoResponseDTO>>addMapping(src -> src.getContatosCamposCustomizados(),
+						(des, value) -> des.setCampoCustomizadoResponseDTOs(value));
 
 		return modelMapper;
 

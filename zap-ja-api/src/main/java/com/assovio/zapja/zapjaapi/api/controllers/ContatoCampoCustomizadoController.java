@@ -1,5 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assemblers.ContatoCampoCustomizadoAssembler;
@@ -31,6 +34,21 @@ public class ContatoCampoCustomizadoController {
     private ContatoService contatoService;
     private ContatoCampoCustomizadoService contatoCampoCustomizadoService;
     private ContatoCampoCustomizadoAssembler contatoCampoCustomizadoAssembler;
+
+    @GetMapping
+    public ResponseEntity<List<ContatoCampoCustomizadoResponseDTO>> index(
+            @RequestParam(name = "contato_id", required = false) Long contatoId,
+            @RequestParam(name = "campo_customizado_id", required = false) Long campoCustomizadoId) {
+
+        List<ContatoCampoCustomizado> result = this.contatoCampoCustomizadoService.getByFilters(contatoId,
+                campoCustomizadoId);
+
+        List<ContatoCampoCustomizadoResponseDTO> responseDTOs = this.contatoCampoCustomizadoAssembler
+                .toCollectionDTO(result);
+
+        return ResponseEntity.ok(responseDTOs);
+
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContatoCampoCustomizadoResponseDTO> show(
@@ -74,8 +92,8 @@ public class ContatoCampoCustomizadoController {
             throw new EntidadeNaoEncontradaException("Contato Campo Customizado não encontrado!");
         }
 
-        ContatoCampoCustomizado resultEditado = this.contatoCampoCustomizadoAssembler.toEntity(requestDTO);
-        resultEditado.setId(id);
+        ContatoCampoCustomizado resultEditado = this.contatoCampoCustomizadoAssembler.toEntity(requestDTO,
+                resultNaoEditado);
 
         resultEditado = this.contatoCampoCustomizadoService.save(resultEditado);
 

@@ -2,7 +2,6 @@ package com.assovio.zapja.zapjaapi.api.dtos.response;
 
 import java.util.List;
 
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -21,7 +20,7 @@ public class ContatoResponseDTO {
     @JsonProperty("nome")
     private String nome;
 
-    @JsonProperty("campos_customizados")
-    private List<ContatoCampoCustomizadoResponseSimpleDTO> contatoCampoCustomizadoResponseSimpleDTOs;
+    @JsonProperty("contato_campos_customizados")
+    private List<ContatoCampoCustomizadoResponseDTO> campoCustomizadoResponseDTOs;
 
 }
