@@ -4,8 +4,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.assovio.zapja.zapjaapi.domain.daos.CampoCustomizadoDAO;
@@ -38,8 +36,8 @@ public class CampoCustomizadoService {
         this.save(entity);
     }
 
-    public Page<CampoCustomizado> getByFilters(String rotulo, Long tipoCampoCustomizadoId, Pageable pageable) {
-        return this.dao.findByFilters(rotulo, tipoCampoCustomizadoId, pageable);
+    public List<CampoCustomizado> getByFilters(String rotulo, Boolean ativo, Long tipoCampoCustomizadoId) {
+        return this.dao.findByFilters(rotulo, ativo, tipoCampoCustomizadoId);
     }
 
 }

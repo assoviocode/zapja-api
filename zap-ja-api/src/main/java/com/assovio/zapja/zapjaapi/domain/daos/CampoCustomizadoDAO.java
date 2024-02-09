@@ -1,7 +1,7 @@
 package com.assovio.zapja.zapjaapi.domain.daos;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,12 +12,13 @@ import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 @Repository
 public interface CampoCustomizadoDAO extends CrudRepository<CampoCustomizado, Long> {
 
-        @Query(value = "SELECT cc FROM CampoCustomizado cc WHERE " +
+        @Query(value = "SELECT cc FROM CampoCustomizado cc JOIN cc.tipoCampoCustomizado tcc WHERE " +
                         "(:rotulo IS NULL OR cc.rotulo = :rotulo) AND " +
-                        "(:tipoCampoCustomizadoId IS NULL OR cc.tipoCampoCustomizado.id = :tipoCampoCustomizadoId)")
-        Page<CampoCustomizado> findByFilters(
+                        "(:ativo IS NULL OR cc.ativo = :ativo) AND " +
+                        "(:tipoCampoCustomizadoId IS NULL OR tcc.id = :tipoCampoCustomizadoId)")
+        List<CampoCustomizado> findByFilters(
                         @Param("rotulo") String rotulo,
-                        @Param("tipoCampoCustomizadoId") Long tipoCampoCustomizadoId,
-                        Pageable pageable);
+                        @Param("ativo") Boolean ativo,
+                        @Param("tipoCampoCustomizadoId") Long tipoCampoCustomizadoId);
 
 }
