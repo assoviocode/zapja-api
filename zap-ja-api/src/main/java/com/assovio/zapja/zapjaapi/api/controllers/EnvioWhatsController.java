@@ -58,12 +58,19 @@ public class EnvioWhatsController {
             @RequestParam(name = "status", required = false) EnumStatusEnvioWhats status,
             @RequestParam(name = "celular_origem", required = false) String celularOrigem,
             @RequestParam(name = "template_whats_id", required = false) Long templateWhatsId,
-            @RequestParam(name = "contato_id", required = false) Long contatoId) {
+            @RequestParam(name = "contato_id", required = false) Long contatoId,
+            @RequestParam(name = "data_prevista", required = false) Date dataPrevista) {
 
         Pageable paginacao = PageRequest.of(page, size);
 
-        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(nomeContato, numeroWhatsapp, status, celularOrigem,
-                templateWhatsId, contatoId,
+        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(
+                nomeContato,
+                numeroWhatsapp,
+                status,
+                celularOrigem,
+                templateWhatsId,
+                contatoId,
+                dataPrevista,
                 paginacao);
 
         Page<EnvioWhatsResponseSimpleDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(result);
@@ -154,7 +161,7 @@ public class EnvioWhatsController {
 
         for (Long id : enviosWhatsId) {
 
-            EnvioWhats resultNaoEditado = this.envioWhatsService.getById((Long)id);
+            EnvioWhats resultNaoEditado = this.envioWhatsService.getById((Long) id);
 
             if (resultNaoEditado != null) {
                 resultNaoEditado.setStatus(EnumStatusEnvioWhats.CANCELADO);
@@ -164,6 +171,25 @@ public class EnvioWhatsController {
         }
 
         return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/{id}/enviado")
+    public ResponseEntity<?> updateEnviado(@PathVariable Long id) {
+
+        EnvioWhats result = this.envioWhatsService.getById(id);
+
+        if (result == null) {
+            throw new EntidadeNaoEncontradaException("Envio não encontrado!");
+        }
+
+        result.setStatus(EnumStatusEnvioWhats.ENVIADO);
+
+        result = this.envioWhatsService.save(result);
+
+        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
+
+        return ResponseEntity.ok(responseDTO);
 
     }
 

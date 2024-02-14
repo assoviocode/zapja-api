@@ -1,6 +1,7 @@
 package com.assovio.zapja.zapjaapi.domain.services;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,20 +40,26 @@ public class EnvioWhatsService {
         this.save(entity);
     }
 
-    public Page<EnvioWhats> getByFilters(String nomeContato, String numeroWhatsapp, EnumStatusEnvioWhats status, String celularOrigem, Long templateWhatsId,
+    public Page<EnvioWhats> getByFilters(String nomeContato, String numeroWhatsapp, EnumStatusEnvioWhats status,
+            String celularOrigem, Long templateWhatsId,
             Long contatoId,
+            Date dataPrevista,
             Pageable pageable) {
-        return this.dao.findByFilters(nomeContato, numeroWhatsapp, status, celularOrigem, templateWhatsId, contatoId, pageable);
+        return this.dao.findByFilters(nomeContato, numeroWhatsapp, status, celularOrigem, templateWhatsId, contatoId, dataPrevista,
+                pageable);
     }
 
     public EnvioWhats getProximo() {
-        EnvioWhats envioWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NA_FILA);
+        List<EnvioWhats> enviosWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NA_FILA);
 
-        if (envioWhats != null) {
+        if (enviosWhats != null && !enviosWhats.isEmpty()) {
+
+            EnvioWhats envioWhats = enviosWhats.get(0);
             envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);
             this.save(envioWhats);
 
             return envioWhats;
+
         }
 
         return null;
