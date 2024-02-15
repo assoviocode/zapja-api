@@ -36,8 +36,8 @@ public class CampoCustomizadoService {
         this.save(entity);
     }
 
-    public List<CampoCustomizado> getByFilters(String rotulo, Boolean ativo, Long tipoCampoCustomizadoId) {
-        return this.dao.findByFilters(rotulo, ativo, tipoCampoCustomizadoId);
+    public List<CampoCustomizado> getByFilters(String rotulo, Boolean ativo, Boolean obrigatorio, Long tipoCampoCustomizadoId) {
+        return this.dao.findByFilters(rotulo, ativo, obrigatorio, tipoCampoCustomizadoId);
     }
 
 }

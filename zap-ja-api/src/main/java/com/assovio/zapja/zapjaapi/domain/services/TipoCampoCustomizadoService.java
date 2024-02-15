@@ -3,8 +3,6 @@ package com.assovio.zapja.zapjaapi.domain.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.assovio.zapja.zapjaapi.domain.daos.TipoCampoCustomizadoDAO;
@@ -32,8 +30,12 @@ public class TipoCampoCustomizadoService {
         this.dao.delete(entity);
     }
 
-    public Page<TipoCampoCustomizado> getByFilters(String nome, String mascara, Pageable pageable) {
-        return this.dao.findByFilters(nome, mascara, pageable);
+    public TipoCampoCustomizado getByNome(String nome) {
+        return this.dao.findFirstByNome(nome);
+    }
+
+    public List<TipoCampoCustomizado> getByFilters(String nome) {
+        return this.dao.findByFilters(nome);
     }
 
 }

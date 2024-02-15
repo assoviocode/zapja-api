@@ -30,6 +30,10 @@ public class ModelMapperConfig {
 	public ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
 
+		// // modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+		// // modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		// // modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);

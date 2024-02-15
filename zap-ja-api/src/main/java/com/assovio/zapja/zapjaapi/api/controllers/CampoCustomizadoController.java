@@ -20,7 +20,9 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.CampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
+import com.assovio.zapja.zapjaapi.domain.models.TipoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.services.CampoCustomizadoService;
+import com.assovio.zapja.zapjaapi.domain.services.TipoCampoCustomizadoService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -33,14 +35,16 @@ public class CampoCustomizadoController {
 
     private CampoCustomizadoService campoCustomizadoService;
     private CampoCustomizadoAssembler campoCustomizadoAssembler;
+    private TipoCampoCustomizadoService tipoCampoCustomizadoService;
 
     @GetMapping
     public ResponseEntity<List<CampoCustomizadoResponseDTO>> index(
             @RequestParam(name = "rotulo", required = false) String rotulo,
             @RequestParam(name = "ativo", required = false) Boolean ativo,
+            @RequestParam(name = "obrigatorio", required = false) Boolean obrigatorio,
             @RequestParam(name = "tipo_campo_customizado_id", required = false) Long tipoCampoCustomizadoId) {
 
-        List<CampoCustomizado> result = this.campoCustomizadoService.getByFilters(rotulo, ativo,
+        List<CampoCustomizado> result = this.campoCustomizadoService.getByFilters(rotulo, ativo, obrigatorio,
                 tipoCampoCustomizadoId);
 
         List<CampoCustomizadoResponseDTO> responseDTOs = this.campoCustomizadoAssembler.toCollectionDTO(result);
@@ -67,11 +71,23 @@ public class CampoCustomizadoController {
     public ResponseEntity<CampoCustomizadoResponseDTO> store(
             @Valid @RequestBody CampoCustomizadoRequestDTO requestDTO) {
 
-        CampoCustomizado result = this.campoCustomizadoAssembler.toEntity(requestDTO);
+        TipoCampoCustomizado tipoCampoCustomizado = this.tipoCampoCustomizadoService
+                .getById(requestDTO.getTipoCampoCustomizadoId());
 
-        result = this.campoCustomizadoService.save(result);
+        if (tipoCampoCustomizado == null) {
+            throw new EntidadeNaoEncontradaException("Tipo Campo Customizado não encontrado");
+        }
 
-        CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(result);
+        // MAU CHEIRO, AJUSTAR DEPOIS // ESTUDAR MODELMAPPER // PROBLEMA COM MODELMAPPER
+        CampoCustomizado campoCustomizado = new CampoCustomizado();
+        campoCustomizado.setRotulo(requestDTO.getRotulo());
+        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
+        campoCustomizado.setAtivo(true);
+        campoCustomizado.setObrigatorio(requestDTO.getObrigatorio());
+
+        campoCustomizado = this.campoCustomizadoService.save(campoCustomizado);
+
+        CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -80,19 +96,27 @@ public class CampoCustomizadoController {
     public ResponseEntity<CampoCustomizadoResponseDTO> update(@PathVariable Long id,
             @Valid @RequestBody CampoCustomizadoRequestDTO requestDTO) {
 
-        CampoCustomizado resultNaoEditado = this.campoCustomizadoService.getById(id);
+        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getById(id);
 
-        if (resultNaoEditado == null) {
-            throw new EntidadeNaoEncontradaException("CampoCustomizado não encontrado");
+        if (campoCustomizado == null) {
+            throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado");
         }
 
-        CampoCustomizado resultEditado = this.campoCustomizadoAssembler.toEntity(requestDTO);
-        resultEditado.setId(id);
-        resultEditado.setCreatedAt(resultNaoEditado.getCreatedAt());
+        TipoCampoCustomizado tipoCampoCustomizado = this.tipoCampoCustomizadoService
+                .getById(requestDTO.getTipoCampoCustomizadoId());
 
-        resultEditado = this.campoCustomizadoService.save(resultEditado);
+        if (tipoCampoCustomizado == null) {
+            throw new EntidadeNaoEncontradaException("Tipo Campo Customizado não encontrado");
+        }
 
-        CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(resultEditado);
+        // MAU CHEIRO, AJUSTAR DEPOIS // ESTUDAR MODELMAPPER // PROBLEMA COM MODELMAPPER
+        campoCustomizado.setRotulo(requestDTO.getRotulo());
+        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
+        campoCustomizado.setObrigatorio(requestDTO.getObrigatorio());
+
+        campoCustomizado = this.campoCustomizadoService.save(campoCustomizado);
+
+        CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
 
         return ResponseEntity.ok(responseDTO);
 
@@ -110,6 +134,25 @@ public class CampoCustomizadoController {
         campoCustomizadoService.deleteLogical(result);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<CampoCustomizadoResponseDTO> updateDesativar(@PathVariable Long id) {
+
+        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getById(id);
+
+        if (campoCustomizado == null) {
+            throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado");
+        }
+
+        campoCustomizado.setAtivo(false);
+
+        campoCustomizado = this.campoCustomizadoService.save(campoCustomizado);
+
+        CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
+
+        return ResponseEntity.ok(responseDTO);
+
     }
 
 }

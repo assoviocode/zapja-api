@@ -31,6 +31,11 @@ public class CampoCustomizadoAssembler {
         return this.modelMapper.map(requestDTO, CampoCustomizado.class);
     }
 
+    public CampoCustomizado toEntity(CampoCustomizadoRequestDTO requestDTO, CampoCustomizado campoCustomizado) {
+        this.modelMapper.map(requestDTO, campoCustomizado);
+        return campoCustomizado;
+    }
+
     public Page<CampoCustomizadoResponseDTO> toPageDTO(Page<CampoCustomizado> entityPageable) {
         return entityPageable.map(this::toDTO);
     }
