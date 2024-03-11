@@ -47,7 +47,7 @@ public class ContatoController {
     @GetMapping
     public ResponseEntity<Page<ContatoResponseSimpleDTO>> index(
             @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "30") Integer size,
+            @RequestParam(name = "size", required = false, defaultValue = "1000") Integer size,
             @RequestParam(name = "numero_whats", required = false) String numeroWhats,
             @RequestParam(name = "nome", required = false) String nome) {
 
