@@ -27,10 +27,13 @@ import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
+import com.assovio.zapja.zapjaapi.domain.models.Cliente;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
 import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusBotCliente;
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.services.ClienteService;
 import com.assovio.zapja.zapjaapi.domain.services.ContatoService;
 import com.assovio.zapja.zapjaapi.domain.services.EnvioWhatsService;
 import com.assovio.zapja.zapjaapi.domain.services.TemplateWhatsService;
@@ -48,6 +51,7 @@ public class EnvioWhatsController {
     private EnvioWhatsAssembler envioWhatsAssembler;
     private TemplateWhatsService templateWhatsService;
     private ContatoService contatoService;
+    private ClienteService clienteService;
 
     @GetMapping
     public ResponseEntity<Page<EnvioWhatsResponseSimpleDTO>> index(
@@ -209,6 +213,12 @@ public class EnvioWhatsController {
 
     @GetMapping("/proximo")
     public ResponseEntity<EnvioWhatsResponseDTO> getProximo() {
+
+        Cliente cliente = this.clienteService.getByIdAndStatus(Long.parseLong("1"), EnumStatusBotCliente.ENVIANDO);
+
+        if (cliente == null) {
+            throw new EntidadeNaoEncontradaException("Bot do cliente não foi encontrado!");
+        }
 
         EnvioWhats result = this.envioWhatsService.getProximo();
 
