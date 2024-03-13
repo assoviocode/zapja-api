@@ -17,27 +17,28 @@ import lombok.AllArgsConstructor;
 @Component
 public class TipoCampoCustomizadoAssembler {
 
-    private ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
-    public TipoCampoCustomizadoResponseDTO toDTO(TipoCampoCustomizado entity) {
-        return this.modelMapper.map(entity, TipoCampoCustomizadoResponseDTO.class);
-    }
+	public TipoCampoCustomizadoResponseDTO toDTO(TipoCampoCustomizado entity) {
+		return this.modelMapper.map(entity, TipoCampoCustomizadoResponseDTO.class);
+	}
 
-    public List<TipoCampoCustomizadoResponseDTO> toCollectionDTO(List<TipoCampoCustomizado> entitys) {
-        return entitys.stream().map(this::toDTO).collect(Collectors.toList());
-    }
+	public List<TipoCampoCustomizadoResponseDTO> toCollectionDTO(List<TipoCampoCustomizado> entitys) {
+		return entitys.stream().map(this::toDTO).collect(Collectors.toList());
+	}
 
-    public TipoCampoCustomizado toEntity(TipoCampoCustomizadoRequestDTO requestDTO) {
-        return this.modelMapper.map(requestDTO, TipoCampoCustomizado.class);
-    }
+	public TipoCampoCustomizado toEntity(TipoCampoCustomizadoRequestDTO requestDTO) {
+		return this.modelMapper.map(requestDTO, TipoCampoCustomizado.class);
+	}
 
-    public TipoCampoCustomizado toEntity(TipoCampoCustomizadoRequestDTO requestDTO, TipoCampoCustomizado tipoCampoCustomizado) {
-        this.modelMapper.map(requestDTO, tipoCampoCustomizado);
-        return tipoCampoCustomizado;
-    }
+	public TipoCampoCustomizado toEntity(TipoCampoCustomizadoRequestDTO requestDTO,
+			TipoCampoCustomizado tipoCampoCustomizado) {
+		this.modelMapper.map(requestDTO, tipoCampoCustomizado);
+		return tipoCampoCustomizado;
+	}
 
-    public Page<TipoCampoCustomizadoResponseDTO> toPageDTO(Page<TipoCampoCustomizado> entityPageable) {
-        return entityPageable.map(this::toDTO);
-    }
+	public Page<TipoCampoCustomizadoResponseDTO> toPageDTO(Page<TipoCampoCustomizado> entityPageable) {
+		return entityPageable.map(this::toDTO);
+	}
 
 }

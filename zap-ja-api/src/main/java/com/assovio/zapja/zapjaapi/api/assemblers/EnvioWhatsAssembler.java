@@ -18,30 +18,30 @@ import lombok.AllArgsConstructor;
 @Component
 public class EnvioWhatsAssembler {
 
-    private ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
-    public EnvioWhatsResponseDTO toDTO(EnvioWhats entity) {
-        return this.modelMapper.map(entity, EnvioWhatsResponseDTO.class);
-    }
+	public EnvioWhatsResponseDTO toDTO(EnvioWhats entity) {
+		return this.modelMapper.map(entity, EnvioWhatsResponseDTO.class);
+	}
 
-    public List<EnvioWhatsResponseDTO> toCollectionDTO(List<EnvioWhats> entitys) {
-        return entitys.stream().map(this::toDTO).collect(Collectors.toList());
-    }
+	public List<EnvioWhatsResponseDTO> toCollectionDTO(List<EnvioWhats> entitys) {
+		return entitys.stream().map(this::toDTO).collect(Collectors.toList());
+	}
 
-    public EnvioWhats toEntity(EnvioWhatsRequestDTO requestDTO) {
-        return this.modelMapper.map(requestDTO, EnvioWhats.class);
-    }
+	public EnvioWhats toEntity(EnvioWhatsRequestDTO requestDTO) {
+		return this.modelMapper.map(requestDTO, EnvioWhats.class);
+	}
 
-    public EnvioWhatsResponseSimpleDTO toSimpleDTO(EnvioWhats entity) {
-        return this.modelMapper.map(entity, EnvioWhatsResponseSimpleDTO.class);
-    }
+	public EnvioWhatsResponseSimpleDTO toSimpleDTO(EnvioWhats entity) {
+		return this.modelMapper.map(entity, EnvioWhatsResponseSimpleDTO.class);
+	}
 
-    public List<EnvioWhatsResponseSimpleDTO> toCollectionSimpleDTO(List<EnvioWhats> entitys) {
-        return entitys.stream().map(this::toSimpleDTO).collect(Collectors.toList());
-    }
+	public List<EnvioWhatsResponseSimpleDTO> toCollectionSimpleDTO(List<EnvioWhats> entitys) {
+		return entitys.stream().map(this::toSimpleDTO).collect(Collectors.toList());
+	}
 
-    public Page<EnvioWhatsResponseSimpleDTO> toPageDTO(Page<EnvioWhats> entityPageable) {
-        return entityPageable.map(this::toSimpleDTO);
-    }
+	public Page<EnvioWhatsResponseSimpleDTO> toPageDTO(Page<EnvioWhats> entityPageable) {
+		return entityPageable.map(this::toSimpleDTO);
+	}
 
 }
