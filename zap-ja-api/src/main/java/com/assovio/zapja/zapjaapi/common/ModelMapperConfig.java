@@ -1,27 +1,21 @@
 package com.assovio.zapja.zapjaapi.common;
 
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.TemplateWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.TipoCampoCustomizadoResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.*;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
 import com.assovio.zapja.zapjaapi.domain.models.ContatoCampoCustomizado;
-import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 @Configuration
 public class ModelMapperConfig {
@@ -45,7 +39,10 @@ public class ModelMapperConfig {
 				.<TemplateWhatsResponseDTO>addMapping(src -> src.getTemplateWhats(),
 						(des, value) -> des.setTemplateWhatsResponseDTO(value))
 				.<ContatoResponseDTO>addMapping(src -> src.getContato(),
-						(des, value) -> des.setContatoResponseDTO(value));
+						(des, value) -> des.setContatoResponseDTO(value))
+				.<String>addMapping(src -> src.getMensagemFinal(),
+						(des, value) -> des.setMensagemFinal(value))
+		;
 
 		modelMapper.createTypeMap(EnvioWhats.class, EnvioWhatsResponseSimpleDTO.class)
 				.<String>addMapping(src -> src.getContato().getNumeroWhats(), (des, value) -> des.setNumeroWhats(value))

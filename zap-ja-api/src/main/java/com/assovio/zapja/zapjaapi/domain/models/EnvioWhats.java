@@ -1,31 +1,17 @@
 package com.assovio.zapja.zapjaapi.domain.models;
 
-import java.time.OffsetDateTime;
-import java.util.Date;
-
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.time.OffsetDateTime;
+import java.util.Date;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
@@ -86,5 +72,68 @@ public class EnvioWhats {
     public Date getDataEnvio() {
         return this.dataReal == null ? this.dataPrevista : this.dataReal;
     }
+
+    public String getMensagemFinal() {
+
+        String patternString = "(\\{\\{.*?\\}\\})";
+
+        if (templateWhats != null && !templateWhats.getTexto().isEmpty() && contato != null && !contato.getNome().isEmpty()) {
+
+            String textoTemplate = templateWhats.getTexto();
+            Pattern pattern = Pattern.compile(patternString);
+            Matcher matcher = pattern.matcher(textoTemplate);
+
+            while (matcher.find()) {
+
+                String chave = matcher.group(1);
+                String chaveTratada = this.getStringValida(chave);
+
+                if (chaveTratada.equals("{{NOME}}")) {
+                    textoTemplate = textoTemplate.replace(chaveTratada, contato.getNome());
+                } else if (chaveTratada.equals("{{NUMERO_WHATSAPP}}")) {
+                    textoTemplate = textoTemplate.replace(chaveTratada, contato.getNumeroWhats());
+                } else {
+                    for (ContatoCampoCustomizado contatoCampoCustomizado : this.contato.getContatosCamposCustomizados()) {
+
+                        String rotuloChave = "{{" + this.getStringValida(contatoCampoCustomizado.getCampoCustomizado().getRotulo().replace(" ", "_").toUpperCase().trim()) + "}}";
+
+                        if (rotuloChave.equals(chaveTratada)) {
+                            textoTemplate = textoTemplate.replace(chaveTratada, contatoCampoCustomizado.getValor());
+                            break;
+                        }
+
+                    }
+                }
+            }
+            textoTemplate = removeParametersByPattern(textoTemplate, patternString);
+            return !textoTemplate.isEmpty() ? textoTemplate : "";
+        }
+
+        return "";
+    }
+
+
+    private String getStringValida(String texto) {
+        String normalized = Normalizer.normalize(texto, Form.NFD);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < normalized.length(); i++) {
+            char c = normalized.charAt(i);
+            if (Character.UnicodeScript.of(c) != Character.UnicodeScript.UNKNOWN) {
+                stringBuilder.append(c);
+            }
+        }
+
+        return stringBuilder.toString().replace("{{{", "{{").replace("}}}", "}}").trim();
+    }
+
+    private String removeParametersByPattern(String text, String patternString) {
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(text);
+        return matcher.replaceAll("");
+    }
+
+
+
 
 }

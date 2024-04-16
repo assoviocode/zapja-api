@@ -1,17 +1,16 @@
 package com.assovio.zapja.zapjaapi.domain.services;
 
-import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.List;
-
+import com.assovio.zapja.zapjaapi.domain.daos.EnvioWhatsDAO;
+import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.assovio.zapja.zapjaapi.domain.daos.EnvioWhatsDAO;
-import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class EnvioWhatsService {
@@ -50,7 +49,7 @@ public class EnvioWhatsService {
     }
 
     public EnvioWhats getProximo() {
-        List<EnvioWhats> enviosWhats = this.dao.findFirstByStatus(EnumStatusEnvioWhats.NA_FILA);
+        List<EnvioWhats> enviosWhats = this.dao.findFirstValidByStatus(EnumStatusEnvioWhats.NA_FILA.name());
 
         if (enviosWhats != null && !enviosWhats.isEmpty()) {
 

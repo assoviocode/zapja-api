@@ -25,4 +25,5 @@ public class CampoCustomizadoRequestDTO {
     @JsonProperty("tipo_campo_customizado_id")
     private Long tipoCampoCustomizadoId;
 
+
 }

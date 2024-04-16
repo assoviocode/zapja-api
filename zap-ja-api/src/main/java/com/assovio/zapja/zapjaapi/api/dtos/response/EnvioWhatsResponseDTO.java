@@ -25,6 +25,9 @@ public class EnvioWhatsResponseDTO {
     @JsonProperty("servidor")
     private String servidor;
 
+    @JsonProperty("mensagem_final")
+    private String mensagemFinal;
+
     @JsonProperty("template_whats")
     private TemplateWhatsResponseDTO templateWhatsResponseDTO;
 
