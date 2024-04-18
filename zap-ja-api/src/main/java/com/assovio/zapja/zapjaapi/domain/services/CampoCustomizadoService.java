@@ -1,13 +1,12 @@
 package com.assovio.zapja.zapjaapi.domain.services;
 
-import java.time.OffsetDateTime;
-import java.util.List;
-
+import com.assovio.zapja.zapjaapi.domain.daos.CampoCustomizadoDAO;
+import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.assovio.zapja.zapjaapi.domain.daos.CampoCustomizadoDAO;
-import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class CampoCustomizadoService {
@@ -34,6 +33,10 @@ public class CampoCustomizadoService {
     public void deleteLogical(CampoCustomizado entity) {
         entity.setDeletedAt(OffsetDateTime.now());
         this.save(entity);
+    }
+
+    public List<CampoCustomizado> getObrigatorios() {
+        return this.dao.findAllObrigatorios();
     }
 
     public List<CampoCustomizado> getByFilters(String rotulo, Boolean ativo, Boolean obrigatorio, Long tipoCampoCustomizadoId) {

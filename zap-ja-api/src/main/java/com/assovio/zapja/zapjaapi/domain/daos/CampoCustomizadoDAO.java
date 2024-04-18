@@ -1,13 +1,12 @@
 package com.assovio.zapja.zapjaapi.domain.daos;
 
-import java.util.List;
-
+import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.assovio.zapja.zapjaapi.domain.models.CampoCustomizado;
+import java.util.List;
 
 @Repository
 public interface CampoCustomizadoDAO extends CrudRepository<CampoCustomizado, Long> {
@@ -22,5 +21,9 @@ public interface CampoCustomizadoDAO extends CrudRepository<CampoCustomizado, Lo
                         @Param("ativo") Boolean ativo,
                         @Param("obrigatorio") Boolean obrigatorio,
                         @Param("tipoCampoCustomizadoId") Long tipoCampoCustomizadoId);
+
+
+        @Query(value = "SELECT cc FROM CampoCustomizado cc WHERE cc.obrigatorio = true")
+        List<CampoCustomizado> findAllObrigatorios();
 
 }

@@ -1,25 +1,5 @@
 package com.assovio.zapja.zapjaapi.api.controllers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.assovio.zapja.zapjaapi.api.assemblers.EnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsUpdateRequestDTO;
@@ -29,17 +9,26 @@ import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaExcepti
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.models.Cliente;
 import com.assovio.zapja.zapjaapi.domain.models.Contato;
-import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
-import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusBotCliente;
 import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.EnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.models.TemplateWhats;
 import com.assovio.zapja.zapjaapi.domain.services.ClienteService;
 import com.assovio.zapja.zapjaapi.domain.services.ContatoService;
 import com.assovio.zapja.zapjaapi.domain.services.EnvioWhatsService;
 import com.assovio.zapja.zapjaapi.domain.services.TemplateWhatsService;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @CrossOrigin("*")
 @AllArgsConstructor

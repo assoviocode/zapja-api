@@ -33,7 +33,6 @@ public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
                         @Param("dataPrevista") Date dataPrevista,
                         Pageable pageable);
 
-        // EnvioWhats findFirstByStatus(EnumStatusEnvioWhats status);
 
         @Query(value = "SELECT ew FROM EnvioWhats ew WHERE "
                         + "(:status IS NULL OR ew.status = :status) AND "
