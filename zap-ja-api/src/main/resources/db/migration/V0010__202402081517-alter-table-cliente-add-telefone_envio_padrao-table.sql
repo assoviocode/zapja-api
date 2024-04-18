@@ -1,0 +1,2 @@
+ALTER TABLE cliente
+ADD COLUMN telefone_padrao VARCHAR(25) DEFAULT NULL;

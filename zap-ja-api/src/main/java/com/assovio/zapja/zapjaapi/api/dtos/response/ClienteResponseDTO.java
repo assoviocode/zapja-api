@@ -18,4 +18,7 @@ public class ClienteResponseDTO {
     @JsonProperty("qr_code_whats")
     private byte[] qrCodeWhats;
 
+    @JsonProperty("telefone_padrao")
+    private String telefonePadrao;
+
 }

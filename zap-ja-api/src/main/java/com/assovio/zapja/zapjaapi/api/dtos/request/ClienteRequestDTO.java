@@ -13,4 +13,8 @@ public class ClienteRequestDTO {
     @NotBlank
     @JsonProperty("nome")
     private String nome;
+
+
+    @JsonProperty("telefone_padrao")
+    private String telefonePadrao;
 }
