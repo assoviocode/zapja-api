@@ -1,6 +1,6 @@
 package com.assovio.zapja.zapjaapi.api.dtos.request;
 
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusEnvioWhats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;

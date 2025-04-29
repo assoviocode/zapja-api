@@ -1,19 +1,22 @@
 package com.assovio.zapja.zapjaapi.api.infra.security;
 
-import com.assovio.zapja.zapjaapi.domain.services.TokenService;
-import com.assovio.zapja.zapjaapi.domain.services.UsuarioService;
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.assovio.zapja.zapjaapi.domain.model.Usuario;
+import com.assovio.zapja.zapjaapi.domain.service.TokenService;
+import com.assovio.zapja.zapjaapi.domain.service.UsuarioService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -25,19 +28,20 @@ public class SecurityFilter extends OncePerRequestFilter {
     UsuarioService usuarioService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        var token = this.recoverToken(request);
+        String token = this.recoverToken(request);
 
         if (token != null) {
-            var login = tokenService.validateToken(token);
+            String login = this.tokenService.validateToken(token);
 
-            UserDetails userDetails = usuarioService.GetUsuarioExistenteByLogin(login);
+            Usuario usuario = this.usuarioService.getByLogin(login);
 
-            if (userDetails != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
+            if (usuario != null) {
+                var authentication = new UsernamePasswordAuthenticationToken(usuario, null,
+                        usuario.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

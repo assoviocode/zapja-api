@@ -1,8 +1,6 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response.simples;
 
-import java.util.Date;
-
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumStatusEnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusEnvioWhats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -29,8 +27,5 @@ public class EnvioWhatsResponseSimpleDTO {
 
     @JsonProperty("status")
     private EnumStatusEnvioWhats status;
-
-    @JsonProperty("data_envio")
-    private Date dataEnvio;
 
 }

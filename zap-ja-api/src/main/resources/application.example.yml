@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT-3
+
+  flyway:
+    baseline-on-migrate: true
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:4SS0V10PR4J4HMAC256}

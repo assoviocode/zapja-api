@@ -1,7 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response.simples;
 
+import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumPerfilUsuario;
 
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumRoleUsuario;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,5 @@ public class UsuarioSimpleResponseDTO {
 
     private String nome;
 
-    private EnumRoleUsuario role;
-
-
+    private EnumPerfilUsuario perfil;
 }

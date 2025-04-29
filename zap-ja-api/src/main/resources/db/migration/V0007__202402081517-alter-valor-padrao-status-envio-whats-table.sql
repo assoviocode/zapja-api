@@ -1,2 +1,0 @@
-ALTER TABLE envio_whats
-MODIFY status VARCHAR(50) DEFAULT 'NA_FILA';

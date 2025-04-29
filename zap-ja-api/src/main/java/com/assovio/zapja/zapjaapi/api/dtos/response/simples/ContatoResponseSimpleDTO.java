@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class ContatoResponseSimpleDTO {
 
-    @JsonProperty("id")
-    private Long id;
+    @JsonProperty("uuid")
+    private String uuid;
 
     @JsonProperty("numero_whats")
     private String numeroWhats;

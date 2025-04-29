@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class ContatoCampoCustomizadoResponseDTO {
 
-    @JsonProperty("id")
-    private Long id;
+    @JsonProperty("uuid")
+    private String uuid;
 
     @JsonProperty("valor")
     private String valor;

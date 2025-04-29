@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
 	@Autowired
@@ -25,17 +27,19 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-			.csrf(csrf -> csrf.disable())
-			.cors(Customizer.withDefaults())
-			.authorizeHttpRequests(authorize -> authorize
-					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-					.requestMatchers(HttpMethod.GET, "/notificacoes/subscribe").permitAll()
-					.requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
-					//.anyRequest().authenticated()
-					.anyRequest().permitAll()
-			)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+				.csrf(csrf -> csrf.disable())
+				.cors(Customizer.withDefaults())
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+						.requestMatchers(HttpMethod.GET, "/notificacoes/subscribe").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/register")
+						.hasAnyRole("MASTER", "ADMINISTRADOR")
+						.anyRequest().authenticated()
+				// .anyRequest()
+				// .permitAll()
+				)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}

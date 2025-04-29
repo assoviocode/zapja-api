@@ -1,6 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response;
 
-import com.assovio.zapja.zapjaapi.domain.models.Enum.EnumRoleUsuario;
+import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumPerfilUsuario;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,16 +9,16 @@ import lombok.Setter;
 @Setter
 public class LoginResponseDTO {
 
-	private Long id;
-	
+	private String uuid;
+
 	private String nome;
-	
-	private String login;
-	
+
 	private String email;
-	
-	private EnumRoleUsuario role;
-	
+
+	private String login;
+
+	private EnumPerfilUsuario perfil;
+
 	private String token;
-	
+
 }

@@ -1,5 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -9,8 +11,8 @@ import lombok.Setter;
 @Setter
 public class TemplateWhatsResponseDTO {
 
-    @JsonProperty("id")
-    private Long id;
+    @JsonProperty("uuid")
+    private String uuid;
 
     @JsonProperty("nome")
     private String nome;
@@ -21,10 +23,6 @@ public class TemplateWhatsResponseDTO {
     @JsonProperty("ativo")
     private Boolean ativo;
 
-    @JsonProperty("texto")
-    private String texto;
-
-    @JsonProperty("path_arquivo")
-    private String pathArquivo;
-
+    @JsonProperty("mensagens_whats")
+    private List<MensagemWhatsResponseDTO> mensagensWhats;
 }
