@@ -8,6 +8,11 @@ import com.assovio.zapja.zapjaapi.domain.service.RoboClienteService;
 
 @Service
 public class RoboClienteServiceImpl extends GenericServiceImpl<RoboCliente, Long, RoboClienteDAO>
-        implements RoboClienteService {
+                implements RoboClienteService {
+
+        @Override
+        public RoboCliente getByUuidAndCliente(String uuid, Long clienteId) {
+                return this.dao.findFirstByUuidAndClienteId(uuid, clienteId);
+        }
 
 }

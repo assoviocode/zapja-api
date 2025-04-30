@@ -17,4 +17,6 @@ public interface ClienteDAO extends CrudRepository<Cliente, Long> {
         Page<Cliente> findByFilters(
                         @Param("nome") String nome,
                         Pageable pageable);
+
+        Cliente findFirstByUuid(String uuid);
 }

@@ -7,6 +7,8 @@ import com.assovio.zapja.zapjaapi.domain.model.contracts.EntityBase;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -28,7 +30,8 @@ public class RoboCliente extends EntityBase {
     @Column(name = "celular_origem")
     private String celularOrigem;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private EnumStatusRoboCliente status;
 
     @ManyToOne(fetch = FetchType.LAZY)

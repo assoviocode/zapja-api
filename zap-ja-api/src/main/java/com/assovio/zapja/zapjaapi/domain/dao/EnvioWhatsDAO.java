@@ -33,8 +33,10 @@ public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
                         @Param("clienteId") Long clienteId,
                         Pageable pageable);
 
-        @Query(value = "SELECT ew FROM EnvioWhats ew WHERE (:status IS NULL OR ew.status = :status)")
-        List<EnvioWhats> findByStatus(@Param("status") EnumStatusEnvioWhats status);
+        List<EnvioWhats> findByCelularOrigemAndStatusAndClienteId(
+                        @Param("celularOrigem") String celularOrigem,
+                        @Param("status") EnumStatusEnvioWhats status,
+                        @Param("clienteId") Long clienteId);
 
         EnvioWhats findFirstByUuidAndClienteId(String uuid, Long clienteId);
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.assovio.zapja.zapjaapi.domain.model.Cliente;
 import com.assovio.zapja.zapjaapi.domain.model.RoboCliente;
-import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusRoboCliente;
 
 @Repository
 public interface RoboClienteDAO extends CrudRepository<RoboCliente, Long> {
@@ -20,6 +19,6 @@ public interface RoboClienteDAO extends CrudRepository<RoboCliente, Long> {
                         @Param("celularOrigem") String celularOrigem,
                         Pageable pageable);
 
-        RoboCliente findFirstByClienteIdAndStatus(Long clienteId, EnumStatusRoboCliente status);
+        RoboCliente findFirstByUuidAndClienteId(String uuid, Long clienteId);
 
 }

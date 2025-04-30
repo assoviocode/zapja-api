@@ -17,4 +17,9 @@ public class ClienteServiceImpl extends GenericServiceImpl<Cliente, Long, Client
                 return this.dao.findByFilters(nome, pageable);
         }
 
+        @Override
+        public Cliente getByUuid(String uuid) {
+                return this.dao.findFirstByUuid(uuid);
+        }
+
 }

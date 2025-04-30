@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +26,7 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.ClienteRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ClienteResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.Cliente;
+import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.service.ClienteService;
 import com.assovio.zapja.zapjaapi.domain.service.NotificacaoService;
 
@@ -115,13 +118,13 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/qrCodeWhats/upload")
-    public void streamQrCodeWhats(@PathVariable Long id,
+    @PostMapping("/qrCodeWhats/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void streamQrCodeWhats(
+            @AuthenticationPrincipal Usuario usuarioLogado,
             @RequestParam("qr_code_whats") MultipartFile midiaFile) throws IOException {
 
-        Cliente entity = this.clienteService.getById(id);
-
-        if (entity == null) {
+        if (usuarioLogado.getCliente() == null) {
             throw new EntidadeNaoEncontradaException("Cliente não encontrado");
         }
 

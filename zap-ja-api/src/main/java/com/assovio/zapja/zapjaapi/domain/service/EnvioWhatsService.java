@@ -19,5 +19,5 @@ public interface EnvioWhatsService extends GenericService<EnvioWhats, Long> {
 
     public EnvioWhats getByUuidAndCliente(String uuid, Long clienteId);
 
-    public EnvioWhats getProximo();
+    public EnvioWhats getProximo(String celularOrigem, Long clienteId);
 }

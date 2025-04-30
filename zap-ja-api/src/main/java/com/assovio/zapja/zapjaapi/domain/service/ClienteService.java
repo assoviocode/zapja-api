@@ -11,4 +11,6 @@ public interface ClienteService extends GenericService<Cliente, Long> {
 
     public Page<Cliente> getByFilters(String nome, Pageable pageable);
 
+    public Cliente getByUuid(String uuid);
+
 }

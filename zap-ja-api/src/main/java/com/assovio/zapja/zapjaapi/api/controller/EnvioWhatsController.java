@@ -1,7 +1,6 @@
 package com.assovio.zapja.zapjaapi.api.controller;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assembler.EnvioWhatsAssembler;
-import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsUpdateRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
-import com.assovio.zapja.zapjaapi.domain.model.TemplateWhats;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusEnvioWhats;
-import com.assovio.zapja.zapjaapi.domain.service.ClienteService;
-import com.assovio.zapja.zapjaapi.domain.service.ContatoService;
 import com.assovio.zapja.zapjaapi.domain.service.EnvioWhatsService;
-import com.assovio.zapja.zapjaapi.domain.service.TemplateWhatsService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,9 +40,6 @@ import lombok.AllArgsConstructor;
 public class EnvioWhatsController {
 
     private EnvioWhatsService envioWhatsService;
-    private TemplateWhatsService templateWhatsService;
-    private ContatoService contatoService;
-    private ClienteService clienteService;
 
     private EnvioWhatsAssembler envioWhatsAssembler;
 
@@ -67,7 +57,7 @@ public class EnvioWhatsController {
 
         Pageable paginacao = PageRequest.of(page, size);
 
-        Page<EnvioWhats> result = this.envioWhatsService.getByFilters(
+        Page<EnvioWhats> entity = this.envioWhatsService.getByFilters(
                 nomeContato,
                 numeroWhatsapp,
                 status,
@@ -77,9 +67,9 @@ public class EnvioWhatsController {
                 usuarioLogado.getClienteIdOrNull(),
                 paginacao);
 
-        Page<EnvioWhatsResponseSimpleDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(result);
+        Page<EnvioWhatsResponseSimpleDTO> responseDTOs = this.envioWhatsAssembler.toPageDTO(entity);
 
-        return ResponseEntity.ok(responseDTOs);
+        return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
 
     }
 
@@ -88,155 +78,99 @@ public class EnvioWhatsController {
             @AuthenticationPrincipal Usuario usuarioLogado,
             @PathVariable String uuid) {
 
-        EnvioWhats result = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
+        EnvioWhats entity = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
 
-        if (result == null) {
+        if (entity == null) {
             throw new EntidadeNaoEncontradaException("Envio não encontrado!");
         }
 
-        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
+        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(entity);
 
-        return ResponseEntity.ok(responseDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<List<EnvioWhatsResponseDTO>> store(
+    @PutMapping("/{uuid}")
+    public ResponseEntity<EnvioWhatsResponseDTO> update(
             @AuthenticationPrincipal Usuario usuarioLogado,
-            @Valid @RequestBody EnvioWhatsRequestDTO requestDTO) {
-
-        List<EnvioWhatsResponseDTO> responseDTOs = new ArrayList<EnvioWhatsResponseDTO>();
-
-        TemplateWhats templateWhats = this.templateWhatsService.getByUuidAndCliente(requestDTO.getTemplateWhatsUuid(),
-                usuarioLogado.getClienteIdOrNull());
-
-        if (templateWhats == null) {
-            throw new EntidadeNaoEncontradaException("Template não encontrado!");
-        }
-
-        // for (Long contatoId : requestDTO.getContatosId()) {
-
-        // Contato contato = this.contatoService.getById(contatoId);
-
-        // if (contato != null) {
-        // EnvioWhats result = this.envioWhatsAssembler.toEntity(requestDTO);
-
-        // result.setTemplateWhats(templateWhats);
-        // result.setContato(contato);
-        // result.setStatus(EnumStatusEnvioWhats.NA_FILA);
-
-        // result = this.envioWhatsService.save(result);
-
-        // EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
-
-        // responseDTOs.add(responseDTO);
-        // }
-
-        // }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTOs);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<EnvioWhatsResponseDTO> update(@PathVariable Long id,
+            @PathVariable String uuid,
             @Valid @RequestBody EnvioWhatsUpdateRequestDTO requestDTO) {
 
-        EnvioWhats result = this.envioWhatsService.getById(id);
+        EnvioWhats entity = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
 
-        if (result == null) {
+        if (entity == null) {
             throw new EntidadeNaoEncontradaException("Envio não encontrado!");
         }
 
-        result.setStatus(requestDTO.getStatus());
-        result.setLog(requestDTO.getLog());
+        entity.setStatus(requestDTO.getStatus());
+        entity.setLog(requestDTO.getLog());
 
-        if (result.getStatus().equals(EnumStatusEnvioWhats.ENVIADO)) {
-            result.setDataReal(OffsetDateTime.now());
-        } else if (result.getStatus().equals(EnumStatusEnvioWhats.CANCELADO)) {
+        if (entity.getStatus().equals(EnumStatusEnvioWhats.ENVIADO)) {
+            entity.setDataReal(OffsetDateTime.now());
+        } else if (entity.getStatus().equals(EnumStatusEnvioWhats.CANCELADO)) {
             if (requestDTO.getLog() == null) {
                 throw new NegocioException("Envie um Log para cancelar o envio!");
             }
         }
 
-        result = this.envioWhatsService.save(result);
+        entity = this.envioWhatsService.save(entity);
 
-        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
+        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(entity);
 
-        return ResponseEntity.ok(responseDTO);
-
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @PutMapping("/cancelar")
-    public ResponseEntity<?> updateCancelarLote(@RequestBody List<Long> enviosWhatsId) {
+    public ResponseEntity<?> updateCancelarLote(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @RequestBody List<String> enviosWhatsUuid) {
 
-        for (Long id : enviosWhatsId) {
+        for (String uuid : enviosWhatsUuid) {
 
-            EnvioWhats resultNaoEditado = this.envioWhatsService.getById((Long) id);
+            EnvioWhats entity = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
 
-            if (resultNaoEditado != null) {
-                resultNaoEditado.setStatus(EnumStatusEnvioWhats.CANCELADO);
-                this.envioWhatsService.save(resultNaoEditado);
+            if (entity != null) {
+                entity.setStatus(EnumStatusEnvioWhats.CANCELADO);
+                this.envioWhatsService.save(entity);
             }
 
         }
 
-        return ResponseEntity.ok().build();
-
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}/enviado")
-    public ResponseEntity<?> updateEnviado(@PathVariable Long id) {
+    @PutMapping("/{uuid}/enviado")
+    public ResponseEntity<?> updateEnviado(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid) {
 
-        EnvioWhats result = this.envioWhatsService.getById(id);
+        EnvioWhats entity = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
 
-        if (result == null) {
+        if (entity == null) {
             throw new EntidadeNaoEncontradaException("Envio não encontrado!");
         }
 
-        result.setStatus(EnumStatusEnvioWhats.ENVIADO);
+        entity.setStatus(EnumStatusEnvioWhats.ENVIADO);
 
-        result = this.envioWhatsService.save(result);
+        entity = this.envioWhatsService.save(entity);
 
-        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
+        EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(entity);
 
-        return ResponseEntity.ok(responseDTO);
-
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> destroy(@PathVariable Long id) {
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<?> destroy(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid) {
 
-        EnvioWhats result = this.envioWhatsService.getById(id);
+        EnvioWhats entity = this.envioWhatsService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
 
-        if (result == null) {
+        if (entity == null) {
             throw new EntidadeNaoEncontradaException("Envio não encontrado");
         }
 
-        envioWhatsService.deleteLogical(result);
+        envioWhatsService.deleteLogical(entity);
 
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    // @GetMapping("/proximo")
-    // public ResponseEntity<EnvioWhatsResponseDTO> getProximo() {
-
-    // Cliente cliente = this.clienteService.getByIdAndStatus(Long.parseLong("1"),
-    // EnumStatusRoboCliente.ENVIANDO);
-
-    // if (cliente == null) {
-    // throw new EntidadeNaoEncontradaException("Bot do cliente não foi
-    // encontrado!");
-    // }
-
-    // EnvioWhats result = this.envioWhatsService.getProximo();
-
-    // if (result == null) {
-    // throw new EntidadeNaoEncontradaException("Sem envios novos!");
-    // }
-
-    // EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(result);
-
-    // return ResponseEntity.ok(responseDTO);
-
-    // }
-
 }

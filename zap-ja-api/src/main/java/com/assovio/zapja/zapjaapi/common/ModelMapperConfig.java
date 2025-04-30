@@ -1,11 +1,16 @@
 package com.assovio.zapja.zapjaapi.common;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.MensagemWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
 
 @Configuration
 public class ModelMapperConfig {
@@ -18,6 +23,12 @@ public class ModelMapperConfig {
 		modelMapperSTRICT.getConfiguration().setAmbiguityIgnored(true);
 
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+
+		modelMapperSTRICT.createTypeMap(EnvioWhats.class, EnvioWhatsResponseDTO.class)
+				.<String>addMapping(src -> src.getContato().getNumeroWhats(),
+						(des, value) -> des.setCelularDestino(value))
+				.<List<MensagemWhatsResponseDTO>>addMapping(src -> src.getMensagensTratadas(),
+						(des, value) -> des.setMensagensTratadas(value));
 
 		return modelMapperSTRICT;
 

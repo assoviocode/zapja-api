@@ -49,14 +49,15 @@ public class EnvioWhatsServiceImpl
         }
 
         @Override
-        public EnvioWhats getProximo() {
+        public EnvioWhats getProximo(String celularOrigem, Long clienteId) {
 
                 Boolean envioInvalido = true;
                 EnvioWhats envioWhats = null;
 
                 while (envioInvalido) {
 
-                        List<EnvioWhats> enviosWhats = this.dao.findByStatus(EnumStatusEnvioWhats.NA_FILA);
+                        List<EnvioWhats> enviosWhats = this.dao.findByCelularOrigemAndStatusAndClienteId(celularOrigem,
+                                        EnumStatusEnvioWhats.NA_FILA, clienteId);
 
                         if (enviosWhats != null && !enviosWhats.isEmpty()) {
 
@@ -64,12 +65,12 @@ public class EnvioWhatsServiceImpl
 
                                 if (this.isEnvioWhatsValido(envioWhats)) {
                                         envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);
-                                        this.save(envioWhats);
+                                        // this.save(envioWhats);
                                         envioInvalido = false;
                                 } else {
                                         envioWhats.setStatus(EnumStatusEnvioWhats.ERRO);
                                         envioWhats.setLog("Envio inválido: Campo obrigatório não preenchido");
-                                        this.save(envioWhats);
+                                        // this.save(envioWhats);
                                 }
                         } else {
                                 envioInvalido = false;

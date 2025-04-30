@@ -2,6 +2,7 @@ package com.assovio.zapja.zapjaapi.domain.model;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,51 +66,44 @@ public class EnvioWhats extends EntityBase {
     public List<MensagemWhats> getMensagensTratadas() {
 
         String patternString = "(\\{\\{.*?\\}\\})";
-
         List<MensagemWhats> mensagemWhatsTratadas = new ArrayList<>();
 
         if (this.templateWhats != null && !this.templateWhats.getMensagensWhats().isEmpty()) {
-
             for (MensagemWhats mensagemWhats : this.templateWhats.getMensagensWhats()) {
                 String textoMensagem = mensagemWhats.getTexto();
                 Pattern pattern = Pattern.compile(patternString);
                 Matcher matcher = pattern.matcher(textoMensagem);
 
                 while (matcher.find()) {
-
                     String chave = matcher.group(1);
                     String chaveTratada = this.getChaveTratada(chave);
 
                     if (chaveTratada.equals("{{NOME}}")) {
                         textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNome());
                     } else if (chaveTratada.equals("{{NUMERO_WHATSAPP}}")) {
-                        textoMensagem = textoMensagem.replace(chaveTratada,
-                                this.contato.getNumeroWhats());
+                        textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNumeroWhats());
                     } else {
                         for (ContatoCampoCustomizado contatoCampoCustomizado : this.contato
                                 .getContatosCamposCustomizados()) {
-
-                            String rotuloChave = "{{" +
-                                    this.getChaveTratada(contatoCampoCustomizado.getCampoCustomizado()
-                                            .getRotulo().replace(" ", "_").toUpperCase().trim())
+                            String rotuloChave = "{{" + this.getChaveTratada(
+                                    contatoCampoCustomizado.getCampoCustomizado().getRotulo()
+                                            .replace(" ", "_").toUpperCase().trim())
                                     + "}}";
 
                             if (rotuloChave.equals(chaveTratada)) {
-                                textoMensagem = textoMensagem.replace(chaveTratada,
-                                        contatoCampoCustomizado.getValor());
+                                textoMensagem = textoMensagem.replace(chaveTratada, contatoCampoCustomizado.getValor());
                                 break;
                             }
-
                         }
                     }
                 }
+
                 textoMensagem = this.removeParametersByPattern(textoMensagem, patternString);
-
                 mensagemWhats.setTexto(textoMensagem);
-
                 mensagemWhatsTratadas.add(mensagemWhats);
             }
 
+            mensagemWhatsTratadas.sort(Comparator.comparing(MensagemWhats::getOrdemEnvio));
         }
 
         return mensagemWhatsTratadas;

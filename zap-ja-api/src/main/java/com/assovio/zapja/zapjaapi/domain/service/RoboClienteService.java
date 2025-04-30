@@ -7,4 +7,6 @@ import com.assovio.zapja.zapjaapi.domain.model.RoboCliente;
 @Service
 public interface RoboClienteService extends GenericService<RoboCliente, Long> {
 
+    public RoboCliente getByUuidAndCliente(String uuid, Long clienteId);
+
 }

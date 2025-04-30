@@ -1,5 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.dtos.response;
 
+import java.util.List;
+
 import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusEnvioWhats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,11 +12,14 @@ import lombok.Setter;
 @Setter
 public class EnvioWhatsResponseDTO {
 
-    @JsonProperty("id")
-    private Long id;
+    @JsonProperty("uuid")
+    private String uuid;
 
     @JsonProperty("celular_origem")
     private String celularOrigem;
+
+    @JsonProperty("celular_destino")
+    private String celularDestino;
 
     @JsonProperty("status")
     private EnumStatusEnvioWhats status;
@@ -22,16 +27,10 @@ public class EnvioWhatsResponseDTO {
     @JsonProperty("log")
     private String log;
 
-    @JsonProperty("servidor")
-    private String servidor;
+    @JsonProperty("mensagens_tratadas")
+    private List<MensagemWhatsResponseDTO> mensagensTratadas;
 
-    @JsonProperty("mensagem_final")
-    private String mensagemFinal;
-
-    @JsonProperty("template_whats")
-    private TemplateWhatsResponseDTO templateWhatsResponseDTO;
-
-    @JsonProperty("contato")
-    private ContatoResponseDTO contatoResponseDTO;
+    @JsonProperty("setup_envio_whats")
+    private SetupEnvioWhatsResponseDTO setupEnvioWhats;
 
 }

@@ -1,6 +1,7 @@
 package com.assovio.zapja.zapjaapi.domain.service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import jakarta.annotation.Nonnull;
 import lombok.NonNull;
 
 @Service
@@ -41,12 +43,14 @@ public class NotificacaoService {
 		}
 	}
 
-	public void sendQrCodeToAll(@NonNull byte[] imageBytes) {
+	public void sendQrCodeToAll(@Nonnull byte[] imageBytes) {
+		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
 		for (SseEmitter emitter : sseEmitters) {
 			try {
 				emitter.send(SseEmitter.event()
 						.name("qr_code")
-						.data(imageBytes)
+						.data(base64Image)
 						.id(UUID.randomUUID().toString())
 						.reconnectTime(1000));
 			} catch (Exception e) {
