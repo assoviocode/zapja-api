@@ -45,6 +45,7 @@ public class TemplateWhats extends EntityBase {
     @OneToMany(mappedBy = "templateWhats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MensagemWhats> mensagensWhats = new ArrayList<>();
 
+
     public void setNome(String nome) {
         this.nome = nome;
         this.setChave(this.nome);
