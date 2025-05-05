@@ -150,6 +150,7 @@ public class EnvioWhatsController {
         }
 
         entity.setStatus(EnumStatusEnvioWhats.ENVIADO);
+        entity.setDataReal(OffsetDateTime.now());
 
         entity = this.envioWhatsService.save(entity);
 

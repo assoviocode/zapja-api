@@ -59,4 +59,13 @@ public class TemplateWhats extends EntityBase {
         }
     }
 
+    public void setAtivo(Boolean ativo) {
+
+        if (ativo != null) {
+            this.ativo = ativo;
+        } else {
+            this.ativo = ativo;
+        }
+    }
+
 }

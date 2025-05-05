@@ -17,8 +17,11 @@ public class SetupEnvioWhatsResponseDTO {
     @JsonProperty("data_prevista_inicio")
     private OffsetDateTime dataPrevistaInicio;
 
-    @JsonProperty("intervalo_entre_mensagem")
-    private Integer intervaloEntreMensagem;
+    @JsonProperty("intervalo_entre_mensagem_min")
+    private Integer intervaloEntreMensagemMin;
+
+    @JsonProperty("intervalo_entre_mensagem_max")
+    private Integer intervaloEntreMensagemMax;
 
     @JsonProperty("is_recorrente")
     private Boolean isRecorrente;

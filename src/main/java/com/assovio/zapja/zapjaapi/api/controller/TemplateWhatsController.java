@@ -22,7 +22,6 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.TemplateWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.TemplateWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
-import com.assovio.zapja.zapjaapi.domain.model.MensagemWhats;
 import com.assovio.zapja.zapjaapi.domain.model.TemplateWhats;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.service.TemplateWhatsService;
@@ -88,20 +87,13 @@ public class TemplateWhatsController {
         }
 
         TemplateWhats entity = templateWhatsAssembler.toEntity(requestDTO);
-        entity.setAtivo(true);
         entity.setCliente(usuarioLogado.getCliente());
 
-        if (entity.getMensagensWhats() != null) {
-            for (MensagemWhats mensagem : entity.getMensagensWhats()) {
-                mensagem.setTemplateWhats(entity);
-                mensagem.setCliente(usuarioLogado.getCliente());
-            }
-        }
-
         TemplateWhats templateSalvo = templateWhatsService.save(entity);
+
         TemplateWhatsResponseDTO responseDTO = templateWhatsAssembler.toDTO(templateSalvo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{uuid}")

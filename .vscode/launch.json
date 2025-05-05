@@ -2,6 +2,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Spring Boot-ProservusApiApplication<proservus-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.assovio.proservusapi.ProservusApiApplication",
+            "projectName": "proservus-api",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-ZapJaApiApplication<zap-ja-api>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

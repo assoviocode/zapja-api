@@ -65,12 +65,12 @@ public class EnvioWhatsServiceImpl
 
                                 if (this.isEnvioWhatsValido(envioWhats)) {
                                         envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);
-                                        // this.save(envioWhats);
+                                        this.save(envioWhats);
                                         envioInvalido = false;
                                 } else {
                                         envioWhats.setStatus(EnumStatusEnvioWhats.ERRO);
                                         envioWhats.setLog("Envio inválido: Campo obrigatório não preenchido");
-                                        // this.save(envioWhats);
+                                        this.save(envioWhats);
                                 }
                         } else {
                                 envioInvalido = false;

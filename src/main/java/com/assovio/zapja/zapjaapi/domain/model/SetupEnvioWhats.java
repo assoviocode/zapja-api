@@ -33,8 +33,11 @@ public class SetupEnvioWhats extends EntityBase {
     @Column(name = "data_prevista_inicio", nullable = false)
     private OffsetDateTime dataPrevistaInicio;
 
-    @Column(name = "intervalo_entre_mensagem", nullable = false)
-    private Integer intervaloEntreMensagem;
+    @Column(name = "intervalo_entre_mensagem_min", nullable = true)
+    private Integer intervaloEntreMensagemMin;
+
+    @Column(name = "intervalo_entre_mensagem_max", nullable = false)
+    private Integer intervaloEntreMensagemMax;
 
     @Column(name = "is_recorrente", nullable = true)
     private Boolean isRecorrente;
@@ -48,5 +51,13 @@ public class SetupEnvioWhats extends EntityBase {
 
     @OneToMany(mappedBy = "setupEnvioWhats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EnvioWhats> enviosWhats = new ArrayList<>();
+
+    public void setIntervaloEntreMensagemMin(Integer intervaloEntreMensagemMin) {
+        if (intervaloEntreMensagemMin != null) {
+            this.intervaloEntreMensagemMin = intervaloEntreMensagemMin;
+        } else {
+            this.intervaloEntreMensagemMin = 15;
+        }
+    }
 
 }

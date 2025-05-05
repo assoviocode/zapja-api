@@ -1,12 +1,8 @@
 package com.assovio.zapja.zapjaapi.api.dtos.request;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,10 +19,4 @@ public class TemplateWhatsRequestDTO {
 
     @JsonProperty("ativo")
     private Boolean ativo;
-
-    @NotNull
-    @NotEmpty
-    @JsonProperty("mensagens_whats")
-    private List<MensagemWhatsRequestDTO> mensagensWhats;
-
 }
