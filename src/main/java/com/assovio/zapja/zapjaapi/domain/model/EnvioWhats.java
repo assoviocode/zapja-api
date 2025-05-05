@@ -70,36 +70,41 @@ public class EnvioWhats extends EntityBase {
 
         if (this.templateWhats != null && !this.templateWhats.getMensagensWhats().isEmpty()) {
             for (MensagemWhats mensagemWhats : this.templateWhats.getMensagensWhats()) {
-                String textoMensagem = mensagemWhats.getTexto();
-                Pattern pattern = Pattern.compile(patternString);
-                Matcher matcher = pattern.matcher(textoMensagem);
 
-                while (matcher.find()) {
-                    String chave = matcher.group(1);
-                    String chaveTratada = this.getChaveTratada(chave);
+                if (mensagemWhats.getTexto() != null && !mensagemWhats.getTexto().isBlank()) {
+                    String textoMensagem = mensagemWhats.getTexto();
+                    Pattern pattern = Pattern.compile(patternString);
+                    Matcher matcher = pattern.matcher(textoMensagem);
 
-                    if (chaveTratada.equals("{{NOME}}")) {
-                        textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNome());
-                    } else if (chaveTratada.equals("{{NUMERO_WHATSAPP}}")) {
-                        textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNumeroWhats());
-                    } else {
-                        for (ContatoCampoCustomizado contatoCampoCustomizado : this.contato
-                                .getContatosCamposCustomizados()) {
-                            String rotuloChave = "{{" + this.getChaveTratada(
-                                    contatoCampoCustomizado.getCampoCustomizado().getRotulo()
-                                            .replace(" ", "_").toUpperCase().trim())
-                                    + "}}";
+                    while (matcher.find()) {
+                        String chave = matcher.group(1);
+                        String chaveTratada = this.getChaveTratada(chave);
 
-                            if (rotuloChave.equals(chaveTratada)) {
-                                textoMensagem = textoMensagem.replace(chaveTratada, contatoCampoCustomizado.getValor());
-                                break;
+                        if (chaveTratada.equals("{{NOME}}")) {
+                            textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNome());
+                        } else if (chaveTratada.equals("{{NUMERO_WHATSAPP}}")) {
+                            textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNumeroWhats());
+                        } else {
+                            for (ContatoCampoCustomizado contatoCampoCustomizado : this.contato
+                                    .getContatosCamposCustomizados()) {
+                                String rotuloChave = "{{" + this.getChaveTratada(
+                                        contatoCampoCustomizado.getCampoCustomizado().getRotulo()
+                                                .replace(" ", "_").toUpperCase().trim())
+                                        + "}}";
+
+                                if (rotuloChave.equals(chaveTratada)) {
+                                    textoMensagem = textoMensagem.replace(chaveTratada,
+                                            contatoCampoCustomizado.getValor());
+                                    break;
+                                }
                             }
                         }
                     }
-                }
 
-                textoMensagem = this.removeParametersByPattern(textoMensagem, patternString);
-                mensagemWhats.setTexto(textoMensagem);
+                    textoMensagem = this.removeParametersByPattern(textoMensagem, patternString);
+                    mensagemWhats.setTexto(textoMensagem);
+                }
+                
                 mensagemWhatsTratadas.add(mensagemWhats);
             }
 
