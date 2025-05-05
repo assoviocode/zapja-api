@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class ClienteResponseDTO {
 
-    @JsonProperty("id")
-    private Long id;
+    @JsonProperty("uuid")
+    private String uuid;
 
     @JsonProperty("nome")
     private String nome;

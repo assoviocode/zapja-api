@@ -1,4 +1,4 @@
-package com.assovio.zapja.zapjaapi.api.dtos.response;
+package com.assovio.zapja.zapjaapi.api.dtos.response.simple;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MensagemWhatsResponseDTO {
+public class MensagemWhatsResponseSimpleDTO {
 
     @JsonProperty("uuid")
     private String uuid;
@@ -17,8 +17,5 @@ public class MensagemWhatsResponseDTO {
 
     @JsonProperty("texto")
     private String texto;
-
-    @JsonProperty("midia")
-    private MidiaResponseDTO midia;
 
 }

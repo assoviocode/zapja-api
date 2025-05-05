@@ -23,9 +23,9 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoReques
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
-import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.ContatoResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.model.Contato;
 import com.assovio.zapja.zapjaapi.domain.model.ContatoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;

@@ -48,6 +48,7 @@ public class TemplateWhatsAssembler {
 			typeMap.addMappings(mapper -> {
 				mapper.skip(TemplateWhats::setId);
 				mapper.skip(TemplateWhats::setUuid);
+				mapper.skip(TemplateWhats::setMensagensWhats);
 				mapper.skip(TemplateWhats::setCliente);
 			});
 		}

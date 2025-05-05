@@ -16,7 +16,7 @@ import com.assovio.zapja.zapjaapi.api.assembler.EnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.assembler.SetupEnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.SetupEnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.SetupEnvioWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.Contato;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.model.SetupEnvioWhats;

@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.assovio.zapja.zapjaapi.api.assembler.ClienteAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.ClienteRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ClienteResponseDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.Cliente;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.service.ClienteService;

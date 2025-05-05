@@ -1,7 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.assembler;
 
 import com.assovio.zapja.zapjaapi.api.dtos.response.LoginResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.UsuarioSimpleResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.UsuarioSimpleResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 
 import lombok.AllArgsConstructor;

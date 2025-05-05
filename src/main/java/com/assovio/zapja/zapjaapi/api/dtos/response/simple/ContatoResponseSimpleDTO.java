@@ -1,4 +1,4 @@
-package com.assovio.zapja.zapjaapi.api.dtos.response.simples;
+package com.assovio.zapja.zapjaapi.api.dtos.response.simple;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

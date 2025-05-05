@@ -16,6 +16,7 @@ public class Problema {
 	private Integer status;
 	private OffsetDateTime dataHora;
 	private String titulo;
+	private String mensagem;
 	private List<Campo> campos;
 
 	public static class Campo {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
 
 import lombok.AllArgsConstructor;

@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assovio.zapja.zapjaapi.api.assembler.EnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.EnvioWhatsUpdateRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.EnvioWhatsResponseSimpleDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
-import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.EnvioWhatsResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.model.Enum.EnumStatusEnvioWhats;
@@ -39,9 +39,9 @@ import lombok.AllArgsConstructor;
 @RequestMapping("enviosWhats")
 public class EnvioWhatsController {
 
-    private EnvioWhatsService envioWhatsService;
+    private final EnvioWhatsService envioWhatsService;
 
-    private EnvioWhatsAssembler envioWhatsAssembler;
+    private final EnvioWhatsAssembler envioWhatsAssembler;
 
     @GetMapping
     public ResponseEntity<Page<EnvioWhatsResponseSimpleDTO>> index(
@@ -174,4 +174,5 @@ public class EnvioWhatsController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

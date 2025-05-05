@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assembler.EnvioWhatsAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
-import com.assovio.zapja.zapjaapi.domain.exceptions.NegocioException;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
 import com.assovio.zapja.zapjaapi.domain.model.RoboCliente;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
@@ -29,9 +29,9 @@ import lombok.AllArgsConstructor;
 public class RoboClienteController {
 
     private final RoboClienteService roboClienteService;
-    private EnvioWhatsService envioWhatsService;
+    private final EnvioWhatsService envioWhatsService;
 
-    private EnvioWhatsAssembler envioWhatsAssembler;
+    private final EnvioWhatsAssembler envioWhatsAssembler;
 
     @GetMapping("/{uuid}/proximo")
     public ResponseEntity<EnvioWhatsResponseDTO> getProximo(

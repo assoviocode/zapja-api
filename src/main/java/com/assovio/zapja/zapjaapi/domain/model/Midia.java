@@ -1,5 +1,7 @@
 package com.assovio.zapja.zapjaapi.domain.model;
 
+import java.util.Base64;
+
 import com.assovio.zapja.zapjaapi.domain.model.contracts.EntityBase;
 
 import jakarta.persistence.Basic;
@@ -36,6 +38,13 @@ public class Midia extends EntityBase {
 	public String getExtensao() {
 		String extensao = this.tipo.substring(this.tipo.lastIndexOf("/") + 1);
 		return !extensao.isBlank() ? extensao : "";
+	}
+
+	public String getBase() {
+		if (this.arquivo != null) {
+			return "data:" + this.tipo + ";base64," + Base64.getEncoder().encodeToString(this.arquivo);
+		}
+		return null;
 	}
 
 }

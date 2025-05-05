@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assovio.zapja.zapjaapi.api.assembler.ContatoCampoCustomizadoAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.Contato;
 import com.assovio.zapja.zapjaapi.domain.model.ContatoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assovio.zapja.zapjaapi.api.assembler.CampoCustomizadoAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.request.CampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
-import com.assovio.zapja.zapjaapi.domain.exceptions.EntidadeNaoEncontradaException;
+import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.TipoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.service.CampoCustomizadoService;

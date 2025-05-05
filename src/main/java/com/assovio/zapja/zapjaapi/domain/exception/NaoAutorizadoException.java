@@ -1,4 +1,4 @@
-package com.assovio.zapja.zapjaapi.domain.exceptions;
+package com.assovio.zapja.zapjaapi.domain.exception;
 
 public class NaoAutorizadoException extends RuntimeException {
 

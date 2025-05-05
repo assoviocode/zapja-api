@@ -27,6 +27,8 @@ public class ModelMapperConfig {
 		modelMapperSTRICT.createTypeMap(EnvioWhats.class, EnvioWhatsResponseDTO.class)
 				.<String>addMapping(src -> src.getContato().getNumeroWhats(),
 						(des, value) -> des.setCelularDestino(value))
+				.<String>addMapping(src -> src.getTemplateWhats().getUuid(),
+						(des, value) -> des.setTemplateWhatsUuid(value))
 				.<List<MensagemWhatsResponseDTO>>addMapping(src -> src.getMensagensTratadas(),
 						(des, value) -> des.setMensagensTratadas(value));
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoCampoCustomizadoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoCampoCustomizadoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoCampoCustomizadoResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.ContatoCampoCustomizadoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.model.ContatoCampoCustomizado;
 
 import lombok.AllArgsConstructor;

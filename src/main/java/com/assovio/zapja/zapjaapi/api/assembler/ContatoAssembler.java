@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.assovio.zapja.zapjaapi.api.dtos.request.ContatoRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
-import com.assovio.zapja.zapjaapi.api.dtos.response.simples.ContatoResponseSimpleDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.simple.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.model.Contato;
 
 import lombok.AllArgsConstructor;

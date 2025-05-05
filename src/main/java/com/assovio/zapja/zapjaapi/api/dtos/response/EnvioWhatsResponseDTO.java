@@ -27,6 +27,9 @@ public class EnvioWhatsResponseDTO {
     @JsonProperty("log")
     private String log;
 
+    @JsonProperty("template_whats_uuid")
+    private String templateWhatsUuid;
+
     @JsonProperty("mensagens_tratadas")
     private List<MensagemWhatsResponseDTO> mensagensTratadas;
 

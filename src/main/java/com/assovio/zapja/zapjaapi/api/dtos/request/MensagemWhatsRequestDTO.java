@@ -1,6 +1,6 @@
 package com.assovio.zapja.zapjaapi.api.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -11,13 +11,9 @@ import lombok.Setter;
 public class MensagemWhatsRequestDTO {
 
     @NotNull
-    @JsonProperty("ordem_envio")
     private Integer ordemEnvio;
 
-    @JsonProperty("texto")
     private String texto;
 
-    @JsonProperty("midia")
-    private String midia;
-
+    private MultipartFile midia;
 }
