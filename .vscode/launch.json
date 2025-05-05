@@ -19,6 +19,16 @@
             "projectName": "zap-ja-api",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ZapJaApiApplication<zapja-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.assovio.zapja.zapjaapi.ZapJaApiApplication",
+            "projectName": "zapja-api",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
