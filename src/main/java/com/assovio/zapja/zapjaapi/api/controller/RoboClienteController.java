@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,6 +59,39 @@ public class RoboClienteController {
         EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(entity);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/{uuid}/iniciarEnvio")
+    public ResponseEntity<HttpStatus> iniciarEnvio(@PathVariable String uuid,
+            @AuthenticationPrincipal Usuario usuarioLogado) {
+
+        RoboCliente roboCliente = this.roboClienteService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
+
+        if (roboCliente == null) {
+            throw new EntidadeNaoEncontradaException("Robo do Cliente não foi encontrado!");
+        }
+
+        roboCliente.setStatus(EnumStatusRoboCliente.ENVIANDO);
+
+        roboCliente = this.roboClienteService.save(roboCliente);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{uuid}/pararEnvio")
+    public ResponseEntity<HttpStatus> pararEnvio(@PathVariable String uuid,
+            @AuthenticationPrincipal Usuario usuarioLogado) {
+        RoboCliente roboCliente = this.roboClienteService.getByUuidAndCliente(uuid, usuarioLogado.getClienteIdOrNull());
+
+        if (roboCliente == null) {
+            throw new EntidadeNaoEncontradaException("Robo do Cliente não foi encontrado!");
+        }
+
+        roboCliente.setStatus(EnumStatusRoboCliente.PARADO);
+
+        roboCliente = this.roboClienteService.save(roboCliente);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

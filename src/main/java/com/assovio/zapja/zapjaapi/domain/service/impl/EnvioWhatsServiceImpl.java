@@ -56,12 +56,10 @@ public class EnvioWhatsServiceImpl
 
                 while (envioInvalido) {
 
-                        List<EnvioWhats> enviosWhats = this.dao.findByCelularOrigemAndStatusAndClienteId(celularOrigem,
+                        envioWhats = this.dao.findFirstByCelularOrigemAndStatusAndClienteId(celularOrigem,
                                         EnumStatusEnvioWhats.NA_FILA, clienteId);
 
-                        if (enviosWhats != null && !enviosWhats.isEmpty()) {
-
-                                envioWhats = enviosWhats.get(0);
+                        if (envioWhats != null) {
 
                                 if (this.isEnvioWhatsValido(envioWhats)) {
                                         envioWhats.setStatus(EnumStatusEnvioWhats.EM_ANDAMENTO);

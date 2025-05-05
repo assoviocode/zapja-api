@@ -33,7 +33,7 @@ public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
                         @Param("clienteId") Long clienteId,
                         Pageable pageable);
 
-        List<EnvioWhats> findByCelularOrigemAndStatusAndClienteId(
+        EnvioWhats findFirstByCelularOrigemAndStatusAndClienteId(
                         @Param("celularOrigem") String celularOrigem,
                         @Param("status") EnumStatusEnvioWhats status,
                         @Param("clienteId") Long clienteId);
