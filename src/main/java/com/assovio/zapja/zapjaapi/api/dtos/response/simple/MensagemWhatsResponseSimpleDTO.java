@@ -18,4 +18,7 @@ public class MensagemWhatsResponseSimpleDTO {
     @JsonProperty("texto")
     private String texto;
 
+    @JsonProperty("tem_imagem")
+    private Boolean temImagem;
+
 }
