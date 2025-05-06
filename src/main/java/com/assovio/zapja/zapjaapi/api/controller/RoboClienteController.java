@@ -44,7 +44,7 @@ public class RoboClienteController {
     public ResponseEntity<List<RoboClienteResponseDTO>> index(
             @AuthenticationPrincipal Usuario usuarioLogado,
             @RequestParam(name = "celular_origem", required = false) String celularOrigem,
-            @RequestParam(name = "status", required = false) EnumStatusRoboCliente status) {
+            @RequestParam(required = false) EnumStatusRoboCliente status) {
 
         List<RoboCliente> result = this.roboClienteService.getByFilters(celularOrigem, status,
                 usuarioLogado.getClienteIdOrNull());
@@ -79,6 +79,31 @@ public class RoboClienteController {
         EnvioWhatsResponseDTO responseDTO = this.envioWhatsAssembler.toDTO(entity);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/iniciarTodos")
+    public ResponseEntity<HttpStatus> iniciarTodos(@AuthenticationPrincipal Usuario usuarioLogado) {
+
+        List<RoboCliente> result = this.roboClienteService.getByFilters(null, EnumStatusRoboCliente.PARADO,
+                usuarioLogado.getClienteIdOrNull());
+
+        result.stream().forEach(rb -> rb.setStatus(EnumStatusRoboCliente.ENVIANDO));
+
+        this.roboClienteService.saveAll(result);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/pararTodos")
+    public ResponseEntity<HttpStatus> pararTodos(@AuthenticationPrincipal Usuario usuarioLogado) {
+        List<RoboCliente> result = this.roboClienteService.getByFilters(null, EnumStatusRoboCliente.ENVIANDO,
+                usuarioLogado.getClienteIdOrNull());
+
+        result.stream().forEach(rb -> rb.setStatus(EnumStatusRoboCliente.PARADO));
+
+        this.roboClienteService.saveAll(result);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{uuid}/iniciarEnvio")
