@@ -177,15 +177,27 @@ public class ContatoController {
 
                 if (contatoCampoCustomizado != null) {
 
+                    CampoCustomizado campoCustomizado = this.campoCustomizadoService.getByUuidAndCliente(
+                            contatoCampoCustomizadoRequestDTO.getCampoCustomizadoUuid(),
+                            usuarioLogado.getClienteIdOrNull());
+
+                    if (campoCustomizado == null) {
+                        throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado!");
+                    }
+
                     contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler
                             .toEntityUpdate(contatoCampoCustomizadoRequestDTO, contatoCampoCustomizado);
+                            
+                    contatoCampoCustomizado.setCampoCustomizado(campoCustomizado);
+                    contatoCampoCustomizado.setContato(entity);
+                    contatoCampoCustomizado.setCliente(usuarioLogado.getCliente());
 
                     contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
 
                     ContatoCampoCustomizadoResponseDTO contatoCampoCustomizadoResponseDTO = this.contatoCampoCustomizadoAssembler
                             .toDTO(contatoCampoCustomizado);
 
-                    responseDTO.getCampoCustomizado().add(contatoCampoCustomizadoResponseDTO);
+                    responseDTO.getContatosCamposCustomizados().add(contatoCampoCustomizadoResponseDTO);
                 }
 
             }

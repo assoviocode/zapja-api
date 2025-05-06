@@ -22,7 +22,7 @@ public interface EnvioWhatsDAO extends CrudRepository<EnvioWhats, Long> {
                         + "AND (:celularOrigem IS NULL OR ew.celularOrigem = :celularOrigem) "
                         + "AND (:templateWhatsUuid IS NULL OR ew.templateWhats.uuid = :templateWhatsUuid) "
                         + "AND (:contatoUuid IS NULL OR ew.contato.uuid = :contatoUuid) "
-                        + "AND (:clienteId IS NULL OR ew.contato.id = :clienteId)")
+                        + "AND ew.cliente.id = :clienteId")
         Page<EnvioWhats> findByFilters(
                         @Param("nomeContato") String nomeContato,
                         @Param("numeroWhatsapp") String numeroWhatsapp,
