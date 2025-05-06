@@ -49,7 +49,7 @@ public class EnvioWhatsController {
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "30") Integer size,
             @RequestParam(name = "nome_contato", required = false) String nomeContato,
-            @RequestParam(name = "numero_whatsapp", required = false) String numeroWhatsapp,
+            @RequestParam(name = "celular_destino", required = false) String celularDestino,
             @RequestParam(required = false) EnumStatusEnvioWhats status,
             @RequestParam(name = "celular_origem", required = false) String celularOrigem,
             @RequestParam(name = "template_whats_uuid", required = false) String templateWhatsUuid,
@@ -59,7 +59,7 @@ public class EnvioWhatsController {
 
         Page<EnvioWhats> entity = this.envioWhatsService.getByFilters(
                 nomeContato,
-                numeroWhatsapp,
+                celularDestino,
                 status,
                 celularOrigem,
                 templateWhatsUuid,
