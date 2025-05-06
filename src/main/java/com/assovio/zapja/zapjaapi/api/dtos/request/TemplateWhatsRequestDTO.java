@@ -18,5 +18,5 @@ public class TemplateWhatsRequestDTO {
     private String chave;
 
     @JsonProperty("ativo")
-    private Boolean ativo;
+    private Boolean ativo = false;
 }
