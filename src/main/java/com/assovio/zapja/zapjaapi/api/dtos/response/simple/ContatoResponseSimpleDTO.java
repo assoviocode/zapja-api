@@ -18,4 +18,8 @@ public class ContatoResponseSimpleDTO {
     @JsonProperty("nome")
     private String nome;
 
+    @JsonProperty("is_faltando_campo")
+    private Boolean isFaltandoCampo;
+
+
 }

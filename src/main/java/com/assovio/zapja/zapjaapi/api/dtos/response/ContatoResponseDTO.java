@@ -20,6 +20,9 @@ public class ContatoResponseDTO {
     @JsonProperty("nome")
     private String nome;
 
+    @JsonProperty("is_faltando_campo")
+    private Boolean isFaltandoCampo;
+
     @JsonProperty("contato_campos_customizados")
     private List<ContatoCampoCustomizadoResponseDTO> contatosCamposCustomizados;
 
