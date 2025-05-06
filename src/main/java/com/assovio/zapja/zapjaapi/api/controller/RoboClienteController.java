@@ -1,5 +1,7 @@
 package com.assovio.zapja.zapjaapi.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -8,10 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assovio.zapja.zapjaapi.api.assembler.EnvioWhatsAssembler;
+import com.assovio.zapja.zapjaapi.api.assembler.RoboClienteAssembler;
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.RoboClienteResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exception.NegocioException;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
@@ -26,13 +31,28 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("roboCliente")
+@RequestMapping("robosCliente")
 public class RoboClienteController {
 
     private final RoboClienteService roboClienteService;
     private final EnvioWhatsService envioWhatsService;
 
+    private final RoboClienteAssembler roboClienteAssembler;
     private final EnvioWhatsAssembler envioWhatsAssembler;
+
+    @GetMapping
+    public ResponseEntity<List<RoboClienteResponseDTO>> index(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @RequestParam(name = "celular_origem", required = false) String celularOrigem,
+            @RequestParam(name = "status", required = false) EnumStatusRoboCliente status) {
+
+        List<RoboCliente> result = this.roboClienteService.getByFilters(celularOrigem, status,
+                usuarioLogado.getClienteIdOrNull());
+
+        List<RoboClienteResponseDTO> responseDTOs = this.roboClienteAssembler.toCollectionDTO(result);
+
+        return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
+    }
 
     @GetMapping("/{uuid}/proximo")
     public ResponseEntity<EnvioWhatsResponseDTO> getProximo(

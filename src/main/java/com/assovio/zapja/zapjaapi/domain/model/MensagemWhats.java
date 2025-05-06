@@ -1,6 +1,5 @@
 package com.assovio.zapja.zapjaapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.assovio.zapja.zapjaapi.domain.model.contracts.EntityBase;
@@ -44,10 +43,10 @@ public class MensagemWhats extends EntityBase {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    public Boolean getTemImagem(){
-        if(this.midia != null){
+    public Boolean getTemImagem() {
+        if (this.midia != null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
