@@ -14,6 +14,11 @@ public class TipoCampoCustomizadoServiceImpl
                 implements TipoCampoCustomizadoService {
 
         @Override
+        public TipoCampoCustomizado getByUuidAndCliente(String uuid, Long clienteId) {
+                return this.dao.findFirstByUuidAndClienteId(uuid, clienteId);
+        }
+
+        @Override
         public TipoCampoCustomizado getByNome(String nome, Long clienteId) {
                 return this.dao.findFirstByNomeAndClienteId(nome, clienteId);
         }

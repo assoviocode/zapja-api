@@ -15,8 +15,8 @@ public class ContatoCampoCustomizadoResponseSimpleDTO {
     @JsonProperty("valor")
     private String valor;
 
-    @JsonProperty("campo_customizado_id")
-    private Long campoCustomizadoId;
+    @JsonProperty("campo_customizado_uuid")
+    private Long campoCustomizadoUuid;
 
     @JsonProperty("rotulo")
     private String rotulo;

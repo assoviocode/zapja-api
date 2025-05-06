@@ -1,6 +1,5 @@
 package com.assovio.zapja.zapjaapi.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,26 +24,19 @@ import com.assovio.zapja.zapjaapi.domain.service.TokenService;
 import com.assovio.zapja.zapjaapi.domain.service.UsuarioService;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
+@AllArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
-    UsuarioAssembler usuarioAssembler;
+    private final AuthenticationManager authenticationManager;
+    private final UsuarioService usuarioService;
+    private final TokenService tokenService;
+    private final ClienteService clienteService;
+    private final UsuarioAssembler usuarioAssembler;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {

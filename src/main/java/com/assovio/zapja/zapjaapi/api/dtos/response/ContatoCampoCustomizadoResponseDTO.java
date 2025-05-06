@@ -16,6 +16,6 @@ public class ContatoCampoCustomizadoResponseDTO {
     private String valor;
 
     @JsonProperty("campo_customizado")
-    private CampoCustomizadoResponseDTO campoCustomizadoResponseDTO;
+    private CampoCustomizadoResponseDTO campoCustomizado;
 
 }

@@ -26,9 +26,11 @@ import com.assovio.zapja.zapjaapi.api.dtos.response.ContatoResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simple.ContatoResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.exception.NegocioException;
+import com.assovio.zapja.zapjaapi.domain.model.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.Contato;
 import com.assovio.zapja.zapjaapi.domain.model.ContatoCampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
+import com.assovio.zapja.zapjaapi.domain.service.CampoCustomizadoService;
 import com.assovio.zapja.zapjaapi.domain.service.ContatoCampoCustomizadoService;
 import com.assovio.zapja.zapjaapi.domain.service.ContatoService;
 
@@ -44,6 +46,7 @@ public class ContatoController {
     private ContatoService contatoService;
     private ContatoAssembler contatoAssembler;
     private ContatoCampoCustomizadoService contatoCampoCustomizadoService;
+    private final CampoCustomizadoService campoCustomizadoService;
     private ContatoCampoCustomizadoAssembler contatoCampoCustomizadoAssembler;
 
     @GetMapping
@@ -105,10 +108,20 @@ public class ContatoController {
             for (ContatoCampoCustomizadoRequestDTO contatoCampoCustomizadoRequestDTO : requestDTO
                     .getCampoCustomizadoRequestList()) {
 
+                CampoCustomizado campoCustomizado = this.campoCustomizadoService.getByUuidAndCliente(
+                        contatoCampoCustomizadoRequestDTO.getCampoCustomizadoUuid(),
+                        usuarioLogado.getClienteIdOrNull());
+
+                if (campoCustomizado == null) {
+                    throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado!");
+                }
+
                 ContatoCampoCustomizado contatoCampoCustomizado = new ContatoCampoCustomizado();
                 contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler
                         .toEntityUpdate(contatoCampoCustomizadoRequestDTO, contatoCampoCustomizado);
+                contatoCampoCustomizado.setCampoCustomizado(campoCustomizado);
                 contatoCampoCustomizado.setContato(entity);
+                contatoCampoCustomizado.setCliente(usuarioLogado.getCliente());
 
                 contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
             }
@@ -172,7 +185,7 @@ public class ContatoController {
                     ContatoCampoCustomizadoResponseDTO contatoCampoCustomizadoResponseDTO = this.contatoCampoCustomizadoAssembler
                             .toDTO(contatoCampoCustomizado);
 
-                    responseDTO.getCampoCustomizadoResponseDTOs().add(contatoCampoCustomizadoResponseDTO);
+                    responseDTO.getCampoCustomizado().add(contatoCampoCustomizadoResponseDTO);
                 }
 
             }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.assovio.zapja.zapjaapi.api.dtos.response.CampoCustomizadoResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.CampoCustomizado;
 import com.assovio.zapja.zapjaapi.domain.model.TipoCampoCustomizado;
+import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.service.CampoCustomizadoService;
 import com.assovio.zapja.zapjaapi.domain.service.TipoCampoCustomizadoService;
 
@@ -39,24 +41,27 @@ public class CampoCustomizadoController {
 
     @GetMapping
     public ResponseEntity<List<CampoCustomizadoResponseDTO>> index(
-            @RequestParam(name = "rotulo", required = false) String rotulo,
-            @RequestParam(name = "ativo", required = false) Boolean ativo,
-            @RequestParam(name = "obrigatorio", required = false) Boolean obrigatorio,
-            @RequestParam(name = "tipo_campo_customizado_id", required = false) Long tipoCampoCustomizadoId) {
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @RequestParam(required = false) String rotulo,
+            @RequestParam(required = false) Boolean ativo,
+            @RequestParam(required = false) Boolean obrigatorio,
+            @RequestParam(name = "tipo_campo_customizado_uuid", required = false) String tipoCampoCustomizadoUuid) {
 
         List<CampoCustomizado> result = this.campoCustomizadoService.getByFilters(rotulo, ativo, obrigatorio,
-                tipoCampoCustomizadoId);
+                tipoCampoCustomizadoUuid, usuarioLogado.getClienteIdOrNull());
 
         List<CampoCustomizadoResponseDTO> responseDTOs = this.campoCustomizadoAssembler.toCollectionDTO(result);
 
-        return ResponseEntity.ok(responseDTOs);
-
+        return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CampoCustomizadoResponseDTO> show(@PathVariable Long id) {
+    @GetMapping("/{uuid}")
+    public ResponseEntity<CampoCustomizadoResponseDTO> show(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid) {
 
-        CampoCustomizado result = this.campoCustomizadoService.getById(id);
+        CampoCustomizado result = this.campoCustomizadoService.getByUuidAndCliente(uuid,
+                usuarioLogado.getClienteIdOrNull());
 
         if (result == null) {
             throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado!");
@@ -64,15 +69,16 @@ public class CampoCustomizadoController {
 
         CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(result);
 
-        return ResponseEntity.ok(responseDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<CampoCustomizadoResponseDTO> store(
+            @AuthenticationPrincipal Usuario usuarioLogado,
             @Valid @RequestBody CampoCustomizadoRequestDTO requestDTO) {
 
         TipoCampoCustomizado tipoCampoCustomizado = this.tipoCampoCustomizadoService
-                .getById(requestDTO.getTipoCampoCustomizadoId());
+                .getByUuidAndCliente(requestDTO.getTipoCampoCustomizadoUuid(), usuarioLogado.getClienteIdOrNull());
 
         if (tipoCampoCustomizado == null) {
             throw new EntidadeNaoEncontradaException("Tipo Campo Customizado não encontrado");
@@ -81,29 +87,33 @@ public class CampoCustomizadoController {
         // MAU CHEIRO, AJUSTAR DEPOIS // ESTUDAR MODELMAPPER // PROBLEMA COM MODELMAPPER
         CampoCustomizado campoCustomizado = new CampoCustomizado();
         campoCustomizado.setRotulo(requestDTO.getRotulo());
-        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
         campoCustomizado.setAtivo(true);
         campoCustomizado.setObrigatorio(requestDTO.getObrigatorio());
+        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
+        campoCustomizado.setCliente(usuarioLogado.getCliente());
 
         campoCustomizado = this.campoCustomizadoService.save(campoCustomizado);
 
         CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CampoCustomizadoResponseDTO> update(@PathVariable Long id,
+    @PutMapping("/{uuid}")
+    public ResponseEntity<CampoCustomizadoResponseDTO> update(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid,
             @Valid @RequestBody CampoCustomizadoRequestDTO requestDTO) {
 
-        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getById(id);
+        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getByUuidAndCliente(uuid,
+                usuarioLogado.getClienteIdOrNull());
 
         if (campoCustomizado == null) {
             throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado");
         }
 
         TipoCampoCustomizado tipoCampoCustomizado = this.tipoCampoCustomizadoService
-                .getById(requestDTO.getTipoCampoCustomizadoId());
+                .getByUuidAndCliente(requestDTO.getTipoCampoCustomizadoUuid(), usuarioLogado.getClienteIdOrNull());
 
         if (tipoCampoCustomizado == null) {
             throw new EntidadeNaoEncontradaException("Tipo Campo Customizado não encontrado");
@@ -111,35 +121,41 @@ public class CampoCustomizadoController {
 
         // MAU CHEIRO, AJUSTAR DEPOIS // ESTUDAR MODELMAPPER // PROBLEMA COM MODELMAPPER
         campoCustomizado.setRotulo(requestDTO.getRotulo());
-        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
         campoCustomizado.setObrigatorio(requestDTO.getObrigatorio());
+        campoCustomizado.setTipoCampoCustomizado(tipoCampoCustomizado);
+        campoCustomizado.setCliente(usuarioLogado.getCliente());
 
         campoCustomizado = this.campoCustomizadoService.save(campoCustomizado);
 
         CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
 
-        return ResponseEntity.ok(responseDTO);
-
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> destroy(@PathVariable Long id) {
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<?> destroy(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid) {
 
-        CampoCustomizado result = this.campoCustomizadoService.getById(id);
+        CampoCustomizado result = this.campoCustomizadoService.getByUuidAndCliente(uuid,
+                usuarioLogado.getClienteIdOrNull());
 
         if (result == null) {
-            throw new EntidadeNaoEncontradaException("CampoCustomizado não encontrado");
+            throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado");
         }
 
         campoCustomizadoService.deleteLogical(result);
 
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}/desativar")
-    public ResponseEntity<CampoCustomizadoResponseDTO> updateDesativar(@PathVariable Long id) {
+    @PutMapping("/{uuid}/desativar")
+    public ResponseEntity<CampoCustomizadoResponseDTO> updateDesativar(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @PathVariable String uuid) {
 
-        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getById(id);
+        CampoCustomizado campoCustomizado = this.campoCustomizadoService.getByUuidAndCliente(uuid,
+                usuarioLogado.getClienteIdOrNull());
 
         if (campoCustomizado == null) {
             throw new EntidadeNaoEncontradaException("Campo Customizado não encontrado");
@@ -151,8 +167,7 @@ public class CampoCustomizadoController {
 
         CampoCustomizadoResponseDTO responseDTO = this.campoCustomizadoAssembler.toDTO(campoCustomizado);
 
-        return ResponseEntity.ok(responseDTO);
-
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
 }

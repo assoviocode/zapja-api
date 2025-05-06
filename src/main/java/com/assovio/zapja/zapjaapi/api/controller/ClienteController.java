@@ -26,8 +26,10 @@ import com.assovio.zapja.zapjaapi.api.dtos.request.ClienteRequestDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.ClienteResponseDTO;
 import com.assovio.zapja.zapjaapi.domain.exception.EntidadeNaoEncontradaException;
 import com.assovio.zapja.zapjaapi.domain.model.Cliente;
+import com.assovio.zapja.zapjaapi.domain.model.Midia;
 import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 import com.assovio.zapja.zapjaapi.domain.service.ClienteService;
+import com.assovio.zapja.zapjaapi.domain.service.MidiaService;
 import com.assovio.zapja.zapjaapi.domain.service.NotificacaoService;
 
 import jakarta.validation.Valid;
@@ -41,6 +43,7 @@ public class ClienteController {
 
     private ClienteService clienteService;
     private ClienteAssembler clienteAssembler;
+    private final MidiaService midiaService;
     private NotificacaoService notificacaoService;
 
     @GetMapping
@@ -118,19 +121,19 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/qrCodeWhats/upload")
+    @PostMapping("/autenticacaoWhats/upload")
     @ResponseStatus(HttpStatus.CREATED)
     public void streamQrCodeWhats(
             @AuthenticationPrincipal Usuario usuarioLogado,
-            @RequestParam("qr_code_whats") MultipartFile midiaFile) throws IOException {
+            @RequestParam("autenticacao_whats") MultipartFile midiaFile) throws IOException {
 
         if (usuarioLogado.getCliente() == null) {
             throw new EntidadeNaoEncontradaException("Cliente não encontrado");
         }
 
-        byte[] qrCodeBytes = midiaFile.getBytes();
+        Midia midia = this.midiaService.buildMidiaByMultipartFile(midiaFile);
 
-        this.notificacaoService.sendQrCodeToAll(qrCodeBytes);
+        this.notificacaoService.sendAutenticacaoWhatsTo(usuarioLogado.getCliente().getUuid(), midia);
     }
 
 }

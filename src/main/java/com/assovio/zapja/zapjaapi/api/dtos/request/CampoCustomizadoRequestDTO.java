@@ -22,8 +22,7 @@ public class CampoCustomizadoRequestDTO {
     private Boolean obrigatorio;
 
     @NotNull
-    @JsonProperty("tipo_campo_customizado_id")
-    private Long tipoCampoCustomizadoId;
-
+    @JsonProperty("tipo_campo_customizado_uuid")
+    private String tipoCampoCustomizadoUuid;
 
 }

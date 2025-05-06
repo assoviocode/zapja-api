@@ -9,6 +9,8 @@ import com.assovio.zapja.zapjaapi.domain.model.TipoCampoCustomizado;
 @Service
 public interface TipoCampoCustomizadoService extends GenericService<TipoCampoCustomizado, Long> {
 
+    public TipoCampoCustomizado getByUuidAndCliente(String uuid, Long clienteId);
+
     public TipoCampoCustomizado getByNome(String nome, Long clienteId);
 
     public List<TipoCampoCustomizado> getByFilters(String nome, Long clienteId);

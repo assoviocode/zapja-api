@@ -51,7 +51,7 @@ public class Usuario extends EntityBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private EnumPerfilUsuario perfil;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 

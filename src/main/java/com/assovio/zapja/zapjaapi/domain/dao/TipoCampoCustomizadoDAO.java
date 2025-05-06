@@ -19,5 +19,7 @@ public interface TipoCampoCustomizadoDAO extends CrudRepository<TipoCampoCustomi
                         @Param("nome") String nome,
                         @Param("clienteId") Long clienteId);
 
+        TipoCampoCustomizado findFirstByUuidAndClienteId(String uuid, Long clienteId);
+
         TipoCampoCustomizado findFirstByNomeAndClienteId(String nome, Long clienteId);
 }

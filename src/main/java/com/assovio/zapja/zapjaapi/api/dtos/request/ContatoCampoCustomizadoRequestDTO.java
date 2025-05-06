@@ -18,11 +18,11 @@ public class ContatoCampoCustomizadoRequestDTO {
     private String valor;
 
     @NotNull
-    @JsonProperty("campo_customizado_id")
-    private Long campoCustomizadoId;
+    @JsonProperty("campo_customizado_uuid")
+    private String campoCustomizadoUuid;
 
     @NotNull
-    @JsonProperty("contato_id")
-    private Long contatoId;
+    @JsonProperty("contato_uuid")
+    private String contatoUuid;
 
 }

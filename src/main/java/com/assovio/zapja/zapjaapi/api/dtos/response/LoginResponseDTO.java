@@ -23,4 +23,7 @@ public class LoginResponseDTO {
 
 	private String token;
 
+	@JsonProperty("cliente_uuid")
+	private String clienteUuid;
+
 }

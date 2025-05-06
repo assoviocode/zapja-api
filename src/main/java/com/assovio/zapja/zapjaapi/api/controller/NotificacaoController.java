@@ -1,10 +1,9 @@
 package com.assovio.zapja.zapjaapi.api.controller;
 
-import java.io.IOException;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -20,9 +19,9 @@ public class NotificacaoController {
 
     private NotificacaoService notificacaoService;
 
-    @GetMapping(value = "/subscribe")
-    public SseEmitter subscribe() throws IOException {
-        return this.notificacaoService.subscribe();
+    @GetMapping("/subscribe")
+    public SseEmitter subscribe(@RequestParam("uuidCliente") String uuidCliente) {
+        return this.notificacaoService.subscribe(uuidCliente);
     }
 
 }

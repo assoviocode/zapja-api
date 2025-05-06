@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.assovio.zapja.zapjaapi.api.dtos.response.EnvioWhatsResponseDTO;
+import com.assovio.zapja.zapjaapi.api.dtos.response.LoginResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.MensagemWhatsResponseDTO;
 import com.assovio.zapja.zapjaapi.api.dtos.response.simple.EnvioWhatsResponseSimpleDTO;
 import com.assovio.zapja.zapjaapi.domain.model.EnvioWhats;
+import com.assovio.zapja.zapjaapi.domain.model.Usuario;
 
 @Configuration
 public class ModelMapperConfig {
@@ -24,6 +26,10 @@ public class ModelMapperConfig {
 		modelMapperSTRICT.getConfiguration().setAmbiguityIgnored(true);
 
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+
+		modelMapperSTRICT.createTypeMap(Usuario.class, LoginResponseDTO.class)
+				.<String>addMapping(src -> src.getCliente().getUuid(),
+						(des, value) -> des.setClienteUuid(value));
 
 		modelMapperSTRICT.createTypeMap(EnvioWhats.class, EnvioWhatsResponseSimpleDTO.class)
 				.<String>addMapping(src -> src.getContato().getNome(),
