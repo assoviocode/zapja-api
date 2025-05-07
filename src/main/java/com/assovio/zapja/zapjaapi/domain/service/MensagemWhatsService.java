@@ -15,4 +15,6 @@ public interface MensagemWhatsService extends GenericService<MensagemWhats, Long
 
     public MensagemWhats getByTextoAndTemplateWhatsAndCliente(String texto, String templateWhatsUuid, Long clienteId);
 
+    public MensagemWhats getByOrdemEnvioAndTemplateWhatsAndCliente(Integer ordemEnvio, String templateWhatsUuid, Long clienteId);
+
 }

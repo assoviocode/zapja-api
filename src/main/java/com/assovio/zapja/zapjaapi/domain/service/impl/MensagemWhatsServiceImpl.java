@@ -31,4 +31,11 @@ public class MensagemWhatsServiceImpl
                 return this.dao.findFirstByTextoAndTemplateWhatsUuidAndClienteId(texto, templateWhatsUuid, clienteId);
         }
 
+        @Override
+        public MensagemWhats getByOrdemEnvioAndTemplateWhatsAndCliente(Integer ordemEnvio, String templateWhatsUuid,
+                        Long clienteId) {
+                return this.dao.findFirstByOrdemEnvioAndTemplateWhatsUuidAndClienteId(ordemEnvio, templateWhatsUuid,
+                                clienteId);
+        }
+
 }

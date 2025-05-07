@@ -41,14 +41,15 @@ public class Contato extends EntityBase {
     @OneToMany(mappedBy = "contato")
     private List<ContatoCampoCustomizado> contatosCamposCustomizados;
 
-    public Boolean getIsFaltandoCampo(){
-        for (ContatoCampoCustomizado campoCustomizado : this.contatosCamposCustomizados){
-            if(
-                    ((campoCustomizado != null) && campoCustomizado.getCampoCustomizado().getObrigatorio())
-                            &&
-                    ((campoCustomizado.getValor() == null) || campoCustomizado.getValor().isEmpty())
-            ){
-                return true;
+    public Boolean getIsFaltandoCampo() {
+
+        if (this.contatosCamposCustomizados != null && !this.contatosCamposCustomizados.isEmpty()) {
+            for (ContatoCampoCustomizado campoCustomizado : this.contatosCamposCustomizados) {
+                if (((campoCustomizado != null) && campoCustomizado.getCampoCustomizado().getObrigatorio())
+                        &&
+                        ((campoCustomizado.getValor() == null) || campoCustomizado.getValor().isEmpty())) {
+                    return true;
+                }
             }
         }
 

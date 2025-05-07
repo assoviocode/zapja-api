@@ -28,4 +28,9 @@ public interface MensagemWhatsDAO extends CrudRepository<MensagemWhats, Long> {
         MensagemWhats findFirstByTextoAndTemplateWhatsUuidAndClienteId(String texto, String templateWhatsUuid,
                         Long clienteId);
 
+        MensagemWhats findFirstByOrdemEnvioAndTemplateWhatsUuidAndClienteId(
+                        Integer ordemEnvio,
+                        String templateWhatsUuid,
+                        Long clienteId);
+
 }

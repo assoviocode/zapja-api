@@ -74,7 +74,7 @@ public class AuthController {
             throw new NegocioException("Já existe uma conta com um login parecido!.");
         }
 
-        if (this.usuarioService.getByEmail(data.email()) != null) {
+        if (data.email() != null && this.usuarioService.getByEmail(data.email()) != null) {
             throw new NegocioException("Email já cadastrado no sistema!");
         }
 

@@ -34,10 +34,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/notificacoes/subscribe").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/register")
 						.hasAnyRole("MASTER", "ADMINISTRADOR")
-						.anyRequest().authenticated()
-				// .anyRequest()
-				// .permitAll()
-				)
+						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 

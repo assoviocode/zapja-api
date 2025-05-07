@@ -113,6 +113,14 @@ public class MensagemWhatsController {
             throw new EntidadeNaoEncontradaException("Template não encontrado!");
         }
 
+        MensagemWhats ultimaMensagemWhatsDoTemplate = this.mensagemWhatsService
+                .getByOrdemEnvioAndTemplateWhatsAndCliente(requestDTO.getOrdemEnvio(), templateWhats.getUuid(),
+                        usuarioLogado.getClienteIdOrNull());
+
+        if (ultimaMensagemWhatsDoTemplate != null) {
+            throw new NegocioException("Já existe uma mensagem cadastrada com essa ordem de envio!");
+        }
+
         MensagemWhats entity = null;
 
         if (requestDTO.getTexto() != null) {
