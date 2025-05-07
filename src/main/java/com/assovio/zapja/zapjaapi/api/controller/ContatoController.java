@@ -37,6 +37,9 @@ import com.assovio.zapja.zapjaapi.domain.service.ContatoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
@@ -206,6 +209,31 @@ public class ContatoController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+
+    @PutMapping("/importar")
+    public ResponseEntity<ContatoResponseDTO> update(
+            @AuthenticationPrincipal Usuario usuarioLogado,
+            @Valid @RequestBody List<ContatoRequestDTO> requestsDTOs) {
+
+        List<Contato> contatos = new ArrayList<>();
+
+        for(ContatoRequestDTO requestDTO : requestsDTOs){
+            Contato contato = this.contatoService.getByNumeroWhatsAndCliente(requestDTO.getNumeroWhats(), usuarioLogado.getClienteIdOrNull());
+            if (contato != null) {
+                contato = this.contatoAssembler.toEntityUpdate(requestDTO, contato);
+            }else{
+                contato = this.contatoAssembler.toEntity(requestDTO);
+                contato.setCliente(usuarioLogado.getCliente());
+            }
+
+            contatos.add(contato);
+        }
+
+        this.contatoService.saveAll(contatos);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{uuid}")
     public ResponseEntity<?> destroy(
             @AuthenticationPrincipal Usuario usuarioLogado,
@@ -221,5 +249,8 @@ public class ContatoController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+
 
 }
