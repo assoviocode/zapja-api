@@ -171,6 +171,16 @@ public class MensagemWhatsController {
             throw new EntidadeNaoEncontradaException("Mensagem não encontrada!");
         }
 
+        if (requestDTO.getOrdemEnvio() != entity.getOrdemEnvio()) {
+            MensagemWhats ultimaMensagemWhatsDoTemplate = this.mensagemWhatsService
+                    .getByOrdemEnvioAndTemplateWhatsAndCliente(requestDTO.getOrdemEnvio(), templateWhats.getUuid(),
+                            usuarioLogado.getClienteIdOrNull());
+
+            if (ultimaMensagemWhatsDoTemplate != null) {
+                throw new NegocioException("Já existe uma mensagem cadastrada com essa ordem de envio!");
+            }
+        }
+
         if (requestDTO.getTexto() != null && !entity.getTexto().equalsIgnoreCase(requestDTO.getTexto())) {
             MensagemWhats result = this.mensagemWhatsService.getByTextoAndTemplateWhatsAndCliente(
                     requestDTO.getTexto(),
