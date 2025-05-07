@@ -3,6 +3,7 @@ package com.assovio.zapja.zapjaapi.domain.model;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.assovio.zapja.zapjaapi.domain.model.contracts.EntityBase;
@@ -41,19 +42,39 @@ public class Contato extends EntityBase {
     @OneToMany(mappedBy = "contato")
     private List<ContatoCampoCustomizado> contatosCamposCustomizados;
 
-    public Boolean getIsFaltandoCampo() {
+    @Formula(
+            """
+            (SELECT CASE 
+            WHEN EXISTS (
+                SELECT 1 
+                FROM campo_customizado cc 
+                WHERE cc.obrigatorio = TRUE 
+                AND NOT EXISTS (
+                    SELECT 1 
+                    FROM contato_campo_customizado ccc 
+                    WHERE ccc.contato_id = id 
+                    AND ccc.campo_customizado_id = cc.id 
+                )
+            ) THEN 1 
+            ELSE 0 
+            END)
+            """
+            )
+    private Boolean isFaltandoCampo;
+
+    public void validarIsFaltandoCampo() {
 
         if (this.contatosCamposCustomizados != null && !this.contatosCamposCustomizados.isEmpty()) {
             for (ContatoCampoCustomizado campoCustomizado : this.contatosCamposCustomizados) {
                 if (((campoCustomizado != null) && campoCustomizado.getCampoCustomizado().getObrigatorio())
                         &&
                         ((campoCustomizado.getValor() == null) || campoCustomizado.getValor().isEmpty())) {
-                    return true;
+                    this.setIsFaltandoCampo(true);
                 }
             }
         }
 
-        return false;
+        this.setIsFaltandoCampo(false);
     }
 
     public void setDeletedAt(OffsetDateTime offsetDateTime) {

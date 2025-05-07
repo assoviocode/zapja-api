@@ -40,7 +40,6 @@ import lombok.AllArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("contatos")
@@ -103,6 +102,7 @@ public class ContatoController {
         entity.setCliente(usuarioLogado.getCliente());
 
         entity = this.contatoService.save(entity);
+        entity.validarIsFaltandoCampo();
 
         ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(entity);
 
@@ -129,7 +129,7 @@ public class ContatoController {
                 contatoCampoCustomizado = this.contatoCampoCustomizadoService.save(contatoCampoCustomizado);
             }
         }
-
+        responseDTO.setIsFaltandoCampo(entity.getIsFaltandoCampo());
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
@@ -157,6 +157,7 @@ public class ContatoController {
         entity = this.contatoAssembler.toEntityUpdate(requestDTO, entity);
 
         entity = this.contatoService.save(entity);
+        entity.validarIsFaltandoCampo();
 
         ContatoResponseDTO responseDTO = this.contatoAssembler.toDTO(entity);
 
@@ -205,6 +206,8 @@ public class ContatoController {
 
             }
         }
+
+
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

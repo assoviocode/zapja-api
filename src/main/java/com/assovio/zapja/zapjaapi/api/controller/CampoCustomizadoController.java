@@ -84,7 +84,6 @@ public class CampoCustomizadoController {
             throw new EntidadeNaoEncontradaException("Tipo Campo Customizado não encontrado");
         }
 
-        // MAU CHEIRO, AJUSTAR DEPOIS // ESTUDAR MODELMAPPER // PROBLEMA COM MODELMAPPER
         CampoCustomizado campoCustomizado = new CampoCustomizado();
         campoCustomizado.setRotulo(requestDTO.getRotulo());
         campoCustomizado.setAtivo(true);
