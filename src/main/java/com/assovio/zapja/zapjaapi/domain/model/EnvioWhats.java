@@ -84,6 +84,9 @@ public class EnvioWhats extends EntityBase {
                             textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNome());
                         } else if (chaveTratada.equals("{{NUMERO_WHATSAPP}}")) {
                             textoMensagem = textoMensagem.replace(chaveTratada, this.contato.getNumeroWhats());
+                        } else if (chaveTratada.equals("{{PRIMEIRO_NOME}}")) {
+                            String primeiroNome = this.contato.getNome().split(" ")[0];
+                            textoMensagem = textoMensagem.replace(chaveTratada, primeiroNome);
                         } else {
                             for (ContatoCampoCustomizado contatoCampoCustomizado : this.contato
                                     .getContatosCamposCustomizados()) {
@@ -104,7 +107,7 @@ public class EnvioWhats extends EntityBase {
                     textoMensagem = this.removeParametersByPattern(textoMensagem, patternString);
                     mensagemWhats.setTexto(textoMensagem);
                 }
-                
+
                 mensagemWhatsTratadas.add(mensagemWhats);
             }
 
