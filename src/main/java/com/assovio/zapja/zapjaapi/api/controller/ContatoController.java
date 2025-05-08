@@ -1,12 +1,14 @@
 package com.assovio.zapja.zapjaapi.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,9 +38,6 @@ import com.assovio.zapja.zapjaapi.domain.service.ContatoService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -191,7 +190,7 @@ public class ContatoController {
 
                     contatoCampoCustomizado = this.contatoCampoCustomizadoAssembler
                             .toEntityUpdate(contatoCampoCustomizadoRequestDTO, contatoCampoCustomizado);
-                            
+
                     contatoCampoCustomizado.setCampoCustomizado(campoCustomizado);
                     contatoCampoCustomizado.setContato(entity);
                     contatoCampoCustomizado.setCliente(usuarioLogado.getCliente());
@@ -207,11 +206,8 @@ public class ContatoController {
             }
         }
 
-
-
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-
 
     @PutMapping("/importar")
     public ResponseEntity<ContatoResponseDTO> update(
@@ -220,11 +216,12 @@ public class ContatoController {
 
         List<Contato> contatos = new ArrayList<>();
 
-        for(ContatoRequestDTO requestDTO : requestsDTOs){
-            Contato contato = this.contatoService.getByNumeroWhatsAndCliente(requestDTO.getNumeroWhats(), usuarioLogado.getClienteIdOrNull());
+        for (ContatoRequestDTO requestDTO : requestsDTOs) {
+            Contato contato = this.contatoService.getByNumeroWhatsAndCliente(requestDTO.getNumeroWhats(),
+                    usuarioLogado.getClienteIdOrNull());
             if (contato != null) {
                 contato = this.contatoAssembler.toEntityUpdate(requestDTO, contato);
-            }else{
+            } else {
                 contato = this.contatoAssembler.toEntity(requestDTO);
                 contato.setCliente(usuarioLogado.getCliente());
             }
@@ -252,8 +249,5 @@ public class ContatoController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
 
 }
